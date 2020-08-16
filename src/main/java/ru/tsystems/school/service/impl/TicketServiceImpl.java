@@ -19,7 +19,9 @@ import ru.tsystems.school.service.TrainService;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -126,4 +128,30 @@ public class TicketServiceImpl implements TicketService {
         return id;
     }
 
+    @Override
+    public Map<Integer, Boolean> ticketsForPassengers(String fromStation, String toStation,
+                                                      String fromTime, String toTime) {
+
+        PassengerDto passenger = passengerService.getAuthorizedPassenger();
+
+        Map<Integer, Boolean> ticketsPassenger = new HashMap<>();
+        List<TicketDto> tickets;
+
+        StationDto from = stationService.findByStationName(fromStation);
+        StationDto to = stationService.findByStationName(toStation);
+
+        List<TrainDto> trains = stationService.findSuitableTrains(from, to, fromTime, toTime);
+
+        for (TrainDto train : trains) {
+            tickets = findTicketsByTrainId(train.getId());
+
+            for (TicketDto ticket : tickets) {
+                if (ticket.getPassenger().getId() == passenger.getId())
+                    ticketsPassenger.put(train.getId(), true);
+            }
+        }
+
+        return ticketsPassenger;
+
+    }
 }

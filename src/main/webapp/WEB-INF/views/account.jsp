@@ -9,7 +9,7 @@
 	</head>
 	<body>
 		<%@include file="header.jsp" %>
-		<div class="user">
+		<div class="user ml-3">
 			<security:authorize access="hasAnyAuthority('ADMIN', 'USER')">
 				<hr>
 				<h4 class="text-body">Hello, ${user.firstName} ${user.lastName}</h4>
@@ -41,6 +41,15 @@
 					</table>
 				</div>
 			</security:authorize>
+
+			<div class="contentContainer ml-3">
+				<security:authorize access="isAuthenticated()">
+					<form:form action="${pageContext.request.contextPath}/logout" method="post">
+						<input type="submit" value="Logout"/>
+					</form:form>
+				</security:authorize>
+			</div>
+
 		</div>
 		<%@include file="footer.jsp" %>
 		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

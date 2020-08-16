@@ -12,26 +12,25 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.tsystems.school.security.AuthProviderImpl; 
+import ru.tsystems.school.security.AuthProviderImpl;
 
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-//@ComponentScan("ru.tsystems.school")
-@ComponentScan({ 
-	  "ru.tsystems.school",
-	  "ru.tsystems.school.config",
-	  "ru.tsystems.school.controller",
-	  "ru.tsystems.school.dao",
-	  "ru.tsystems.school.dao.impl",
-	  "ru.tsystems.school.dto",
-	  "ru.tsystems.school.mapper",
-	  "ru.tsystems.school.model",
-	  "ru.tsystems.school.security",
-	  "ru.tsystems.school.service",
-	  "ru.tsystems.school.service.impl",
-	})
+@ComponentScan({
+        "ru.tsystems.school",
+        "ru.tsystems.school.config",
+        "ru.tsystems.school.controller",
+        "ru.tsystems.school.dao",
+        "ru.tsystems.school.dao.impl",
+        "ru.tsystems.school.dto",
+        "ru.tsystems.school.mapper",
+        "ru.tsystems.school.model",
+        "ru.tsystems.school.security",
+        "ru.tsystems.school.service",
+        "ru.tsystems.school.service.impl",
+})
 @Log4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -52,17 +51,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                    .authorizeRequests()
-                    .antMatchers("/").permitAll()
-                    //.antMatchers("/trains/**").hasAuthority("ADMIN")
-                    .antMatchers("/trains").hasAuthority("ADMIN")
-                    .antMatchers("/stations/add").hasAuthority("ADMIN")
-                    .antMatchers("/passengers/**").hasAuthority("ADMIN")
-                    .antMatchers("/login").anonymous()
+                .authorizeRequests()
+                .antMatchers("/").permitAll()
+                .antMatchers("/trains/add").hasAuthority("ADMIN")
+                .antMatchers("/trains").hasAuthority("ADMIN")
+                .antMatchers("/stations/add").hasAuthority("ADMIN")
+                .antMatchers("/passengers/**").hasAuthority("ADMIN")
+                .antMatchers("/login").anonymous()
+                .antMatchers("/account").authenticated()
                 .and()
-                    .formLogin().loginPage("/login")
-                    .loginProcessingUrl("/authenticateTheUser")
-                    .failureUrl("/login?error=true")
+                .formLogin().loginPage("/login")
+                .loginProcessingUrl("/authenticateTheUser")
+                .failureUrl("/login?error=true")
                 .and()
                 .logout()
                 .and()

@@ -10,13 +10,11 @@ import ru.tsystems.school.dto.PassengerDto;
 import ru.tsystems.school.dto.StationDto;
 import ru.tsystems.school.dto.TicketDto;
 import ru.tsystems.school.dto.TrainDto;
-import ru.tsystems.school.model.Passenger;
 import ru.tsystems.school.service.PassengerService;
 import ru.tsystems.school.service.StationService;
 import ru.tsystems.school.service.TicketService;
 import ru.tsystems.school.service.TrainService;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,23 +62,11 @@ public class GeneralController {
                                        @RequestParam String fromTime,
                                        @RequestParam String toTime, Model model) {
 
-        PassengerDto passenger = passengerService.getAuthorizedPassenger();
         StationDto from = stationService.findByStationName(fromStation);
         StationDto to = stationService.findByStationName(toStation);
         List<TrainDto> trains = stationService.findSuitableTrains(from, to, fromTime, toTime);
-
-        List<TicketDto> tickets;
-
-        Map<Integer, Boolean> ticketsPassenger = new HashMap<>();
-
-        for (TrainDto train : trains) {
-            tickets = ticketService.findTicketsByTrainId(train.getId());
-
-            for (TicketDto ticket : tickets) {
-                if (ticket.getPassenger().getId() == passenger.getId())
-                    ticketsPassenger.put(train.getId(), true);
-            }
-        }
+        Map<Integer, Boolean> ticketsPassenger = ticketService.ticketsForPassengers(fromStation,
+                toStation, fromTime, toTime);
 
         model.addAttribute("ticketsPassenger", ticketsPassenger);
         model.addAttribute("trains", trains);
