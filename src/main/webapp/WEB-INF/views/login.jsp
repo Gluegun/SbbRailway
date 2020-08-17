@@ -29,7 +29,6 @@
 						You have been logged out
 					</div>
 				</c:if>
-
 				<p>
 					User name: <label>
 					<input type="text" class="form-control" name="username"/>

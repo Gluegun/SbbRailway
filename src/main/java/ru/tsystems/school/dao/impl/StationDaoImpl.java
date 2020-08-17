@@ -1,5 +1,6 @@
 package ru.tsystems.school.dao.impl;
 
+import org.hibernate.type.IntegerType;
 import org.springframework.stereotype.Repository;
 import ru.tsystems.school.dao.AbstractJpaDao;
 import ru.tsystems.school.dao.ScheduleDao;
@@ -10,9 +11,10 @@ import ru.tsystems.school.model.Station;
 import ru.tsystems.school.model.Train;
 
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Repository
@@ -88,36 +90,55 @@ public class StationDaoImpl extends AbstractJpaDao<Station> implements StationDa
     @Override
     public List<Train> findSuitableTrains(Station from, Station to, String fromTime, String toTime) {
 
-        List<Train> allTrains = trainDao.findAll();
 
-        List<Train> findTrains = new ArrayList<>();
+        List resultList = getEntityManager().createNativeQuery(
+                "select train_id from schedule where schedule.station_id = :from or " +
+                        "schedule.station_id =:to and schedule.departure_time between " +
+                        ":fromTime and :toTime")
+                .setParameter("from", from.getId())
+                .setParameter("to", to.getId())
+                .setParameter("fromTime", fromTime)
+                .setParameter("toTime", toTime)
+                .getResultList();
 
-        for (Train train : allTrains) {
-            if (train.getSeatsAmount() > 0) { // no free places
-                List<Schedule> schedules =
-                        getEntityManager().createQuery(
-                                "select s from Schedule s where s.train.id =:id order by s.departureTime",
-                                Schedule.class)
-                                .setParameter("id", train.getId())
-                                .getResultList();
+        Set<Train> trainsSet = new HashSet<>();
 
-                List<Station> trainRoute = schedules.stream().map(Schedule::getStation).collect(Collectors.toList());
-
-                LocalTime now = LocalTime.now();
-                if (trainRoute.contains(from) && trainRoute.contains(to))
-                    if (trainRoute.indexOf(from) < trainRoute.indexOf(to))
-                        for (Schedule schedule : schedules) {
-                            if (schedule.getStation().getId() == from.getId()) {
-                                if (schedule.getDepartureTime().minusHours(3).isAfter(LocalTime.parse(fromTime))
-                                        && schedule.getDepartureTime().minusHours(3).isBefore(LocalTime.parse(toTime))) {
-                                    if (Math.abs(ChronoUnit.MINUTES.between(schedule.getDepartureTime().minusHours(3), now)) > 10)
-                                        findTrains.add(train);
-                                }
-                            }
-                        }
-            }
+        for (Object o : resultList) {
+            trainsSet.add(trainDao.findById((Integer) o));
         }
-        return findTrains;
+
+        return new ArrayList<>(trainsSet);
+//        List<Train> allTrains = trainDao.findAll();
+//
+//        List<Train> findTrains = new ArrayList<>();
+//
+//        for (Train train : allTrains) {
+//            if (train.getSeatsAmount() > 0) { // no free places
+//                List<Schedule> schedules =
+//                        getEntityManager().createQuery(
+//                                "select s from Schedule s where s.train.id =:id order by s.departureTime",
+//                                Schedule.class)
+//                                .setParameter("id", train.getId())
+//                                .getResultList();
+//
+//                List<Station> trainRoute = schedules.stream().map(Schedule::getStation).collect(Collectors.toList());
+//
+//                LocalTime now = LocalTime.now();
+//                if (trainRoute.contains(from) && trainRoute.contains(to))
+//                    if (trainRoute.indexOf(from) < trainRoute.indexOf(to))
+//                        for (Schedule schedule : schedules) {
+//                            if (schedule.getStation().getId() == from.getId()) {
+//                                if (schedule.getDepartureTime().minusHours(3).isAfter(LocalTime.parse(fromTime))
+//                                        && schedule.getDepartureTime().minusHours(3).isBefore(LocalTime.parse(toTime))) {
+//                                    if (Math.abs(ChronoUnit.MINUTES.between(schedule.getDepartureTime().minusHours(3), now)) > 10)
+//                                        findTrains.add(train);
+//                                }
+//                            }
+//                        }
+//            }
+//        }
+//        return findTrains;
+
     }
 
     @Override

@@ -16,6 +16,7 @@ import ru.tsystems.school.service.PassengerService;
 import ru.tsystems.school.service.StationService;
 import ru.tsystems.school.service.TicketService;
 import ru.tsystems.school.service.TrainService;
+import ru.tsystems.school.exceptions.CantBuyTicketException;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -96,6 +97,10 @@ public class TicketServiceImpl implements TicketService {
 
         PassengerDto passenger = passengerService.getAuthorizedPassenger();
         TrainDto trainDtoById = trainService.findTrainById(trainId);
+
+        if (trainDtoById.getSeatsAmount() == 0) {
+            throw new CantBuyTicketException("Train is already full, no free seats");
+        }
 
         StationDto from = stationService.findByStationName(fromStation);
         LocalTime departureTime = stationService.findScheduleForStationAndTrain(

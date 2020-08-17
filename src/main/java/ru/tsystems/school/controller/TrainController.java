@@ -38,7 +38,6 @@ public class TrainController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
     public String getAllTrains(Model model) {
 
         List<TrainDto> trainsDto = trainService.findAllDtoTrains();

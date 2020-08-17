@@ -42,11 +42,6 @@ public class GeneralController {
         return "home";
     }
 
-    @GetMapping("/error")
-    public String error() {
-        return "error";
-    }
-
     @GetMapping("/buy_ticket")
     public String buyTicket(Model model) {
 

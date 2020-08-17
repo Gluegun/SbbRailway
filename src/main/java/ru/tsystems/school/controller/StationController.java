@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.tsystems.school.dto.ScheduleDto;
 import ru.tsystems.school.dto.StationDto;
 import ru.tsystems.school.dto.TrainDto;
+import ru.tsystems.school.exceptions.NotUniqueNameException;
 import ru.tsystems.school.model.Schedule;
 import ru.tsystems.school.service.StationService;
 
@@ -56,9 +57,10 @@ public class StationController {
 
     @PostMapping("/add")
     public String saveStation(@ModelAttribute("stationDto") StationDto stationDto,
-                              Model model) {
+                              Model model, NotUniqueNameException ex) {
 
         model.addAttribute("stationDto", new StationDto());
+        model.addAttribute("msg", ex);
         stationService.save(stationDto);
 
         return "redirect:/stations";

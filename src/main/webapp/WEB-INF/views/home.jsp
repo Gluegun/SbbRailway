@@ -12,7 +12,7 @@
 		      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
 		      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
 		      crossorigin="anonymous">
-		<title>Welcome to Railway web site</title>
+		<title>Welcome to WhereFrom Railway company web site</title>
 	</head>
 	<body>
 		<%@include file="header.jsp" %>
@@ -27,6 +27,12 @@
 			<security:authorize access="hasAnyAuthority('ADMIN', 'USER')">
 				<a href="${pageContext.request.contextPath}/buy_ticket">Buy ticket</a>
 			</security:authorize>
+		</div>
+		<div class="card ml-3" style="width: 40rem">
+			<img class="card-img-top" src="../../static/img/schema.jpg" alt="schema">
+			<div class="card-body">
+				<p class="card-text">Schema for stations</p>
+			</div>
 		</div>
 		<%@include file="footer.jsp" %>
 		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

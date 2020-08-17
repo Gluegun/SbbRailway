@@ -9,6 +9,8 @@ import ru.tsystems.school.dao.TrainDao;
 import ru.tsystems.school.dto.ScheduleDto;
 import ru.tsystems.school.dto.StationDto;
 import ru.tsystems.school.dto.TrainDto;
+import ru.tsystems.school.exceptions.NoSuchEntityException;
+import ru.tsystems.school.exceptions.NotUniqueNameException;
 import ru.tsystems.school.mapper.ScheduleMapper;
 import ru.tsystems.school.mapper.StationMapper;
 import ru.tsystems.school.mapper.TrainMapper;
@@ -34,12 +36,18 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public void save(StationDto stationDto) {
+
+        List<Station> stations = stationDao.findAll();
+        for (Station station : stations) {
+            if (stationDto.getName().equals(station.getName())) {
+                throw new NotUniqueNameException("Station with such name already exists");
+            }
+        }
         stationDao.save(stationMapper.toEntity(stationDto));
     }
 
     @Override
     public void deleteStationById(int id) {
-
 
         stationDao.deleteById(id);
     }
@@ -62,6 +70,10 @@ public class StationServiceImpl implements StationService {
     @Override
     public StationDto findStationById(int id) {
 
+        Station station = stationDao.findById(id);
+        if (station == null) {
+            throw new NoSuchEntityException("No station found");
+        }
         return stationMapper.toDto(stationDao.findById(id));
 
     }
@@ -73,7 +85,10 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public List<ScheduleDto> findAllSchedulesForStation(int id) {
-        return stationDao.findScheduleForStation(id).stream().map(scheduleMapper::toDto).collect(Collectors.toList());
+        return stationDao.findScheduleForStation(id)
+                .stream()
+                .map(scheduleMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override

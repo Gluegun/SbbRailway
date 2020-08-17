@@ -1,4 +1,3 @@
-<%@ page import="java.time.LocalDate" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
@@ -11,17 +10,11 @@
 		      crossorigin="anonymous">
 		<title>Error</title>
 	</head>
-
+	<%@include file="../header.jsp" %>
 	<body>
-		<h3>Please enter the correct details</h3>
-		<table>
-			<tr>
-				<td><a href="${pageContext.request.contextPath}/trains">Retry</a></td>
-			</tr>
-		</table>
-	</body>
-	<footer class="navbar fixed-bottom">
-		<div class="footer-copyright text-center py-3">© <%= LocalDate.now().getYear() %> Copyright: Gluegun Ltd.
+		<div class="contentContainer mt-3 ml-1">
+			<h4>You cant buy ticket, train is full!</h4>
 		</div>
-	</footer>
+	</body>
+	<%@include file="../footer.jsp" %>
 </html>

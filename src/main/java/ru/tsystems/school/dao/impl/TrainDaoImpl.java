@@ -26,14 +26,6 @@ public class TrainDaoImpl extends AbstractJpaDao<Train> implements TrainDao {
     }
 
     @Override
-    public Train findById(int id) {
-        return getEntityManager().createQuery("select s from Train s where s.id =:id", Train.class)
-                .setParameter("id", id)
-                .getSingleResult();
-    }
-
-
-    @Override
     public List<Station> findAllStations(int id) {
 
         List<Schedule> stationsForTrain = getEntityManager().createQuery(
