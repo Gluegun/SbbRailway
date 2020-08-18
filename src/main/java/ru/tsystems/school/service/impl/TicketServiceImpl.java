@@ -5,12 +5,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.tsystems.school.dao.PassengerDao;
 import ru.tsystems.school.dao.TicketDao;
 import ru.tsystems.school.dto.PassengerDto;
 import ru.tsystems.school.dto.StationDto;
 import ru.tsystems.school.dto.TicketDto;
 import ru.tsystems.school.dto.TrainDto;
 import ru.tsystems.school.mapper.TicketMapper;
+import ru.tsystems.school.model.Passenger;
 import ru.tsystems.school.model.Ticket;
 import ru.tsystems.school.service.PassengerService;
 import ru.tsystems.school.service.StationService;
@@ -35,6 +37,7 @@ public class TicketServiceImpl implements TicketService {
     private final PassengerService passengerService;
     private final TrainService trainService;
     private final StationService stationService;
+    private final PassengerDao passengerDao;
 
     @Override
     public List<TicketDto> findAll() {
@@ -97,6 +100,14 @@ public class TicketServiceImpl implements TicketService {
 
         PassengerDto passenger = passengerService.getAuthorizedPassenger();
         TrainDto trainDtoById = trainService.findTrainById(trainId);
+
+        List<Ticket> ticketsByTrainId = ticketDao.findTicketsByTrainId(trainId);
+        for (Ticket ticket : ticketsByTrainId) {
+            List<Ticket> ticketsByPassengerId = ticketDao.findTicketsByPassengerId(passenger.getId());
+            if (ticket.getId() == ticketsByPassengerId.iterator().next().getId()) {
+                throw new CantBuyTicketException("Passenger has been already bought this ticket");
+            }
+        }
 
         if (trainDtoById.getSeatsAmount() == 0) {
             throw new CantBuyTicketException("Train is already full, no free seats");

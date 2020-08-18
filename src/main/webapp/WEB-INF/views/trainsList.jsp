@@ -36,8 +36,7 @@
 							<td>${tempTrain.seatsAmount} </td>
 							<c:if test="${ticketsPassenger[tempTrain.id] eq true }">
 								<td>
-									<a href="${pageContext.request.contextPath}/trains/buy/${tempTrain.id}?fromStation=${fromStation}"
-									   onclick="return false">Buy ticket</a>
+									<a href="${pageContext.request.contextPath}/trains/buy/${tempTrain.id}?fromStation=${fromStation}">Buy ticket</a>
 								</td>
 							</c:if>
 							<c:if test="${ticketsPassenger[tempTrain.id] != true }">

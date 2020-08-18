@@ -17,7 +17,7 @@
 	<body>
 		<%@include file="header.jsp" %>
 		<div class="container-fluid mt-3">
-			<h5>Welcome to our nice web site where you can buy any ticket you want</h5>
+			<h5 class="mb-2">Welcome to WhereFrom Railways!</h5>
 			<security:authorize access="isAnonymous()">
 				<h5>
 					<a href="${pageContext.request.contextPath}/buy_ticket" onclick="return false;">Buy ticket</a>

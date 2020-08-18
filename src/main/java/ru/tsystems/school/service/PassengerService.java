@@ -1,12 +1,8 @@
 package ru.tsystems.school.service;
 
 import ru.tsystems.school.dto.PassengerDto;
-import ru.tsystems.school.dto.TicketDto;
-import ru.tsystems.school.model.Passenger;
-import ru.tsystems.school.model.Train;
 
 import java.util.List;
-import java.util.Map;
 
 public interface PassengerService {
 

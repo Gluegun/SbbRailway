@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.school.dao.PassengerDao;
 import ru.tsystems.school.dto.PassengerDto;
+import ru.tsystems.school.exceptions.NoSuchEntityException;
 import ru.tsystems.school.mapper.PassengerMapper;
 import ru.tsystems.school.model.Passenger;
 import ru.tsystems.school.service.PassengerService;
@@ -57,7 +58,13 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     public PassengerDto findByUserName(String userName) {
-        return passengerMapper.toDto(passengerDao.findByUserName(userName));
+
+        Passenger passenger = passengerDao.findByUserName(userName);
+        if (passenger == null) {
+            throw new NoSuchEntityException("user not found");
+        }
+        return convertPassengerToDto(passenger);
+
     }
 
     private PassengerDto convertPassengerToDto(Passenger passenger) {

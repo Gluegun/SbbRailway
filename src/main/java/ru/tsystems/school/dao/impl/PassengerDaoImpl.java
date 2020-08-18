@@ -5,9 +5,7 @@ import ru.tsystems.school.dao.AbstractJpaDao;
 import ru.tsystems.school.dao.PassengerDao;
 import ru.tsystems.school.model.Passenger;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.List;
+import javax.persistence.NoResultException;
 
 
 @Component
@@ -21,17 +19,18 @@ public class PassengerDaoImpl extends AbstractJpaDao<Passenger> implements Passe
     @Override
     public Passenger findByUserName(String userName) {
 
-        List<Passenger> passenger = null;
+        Passenger passenger = null;
 
         try {
-            passenger = getEntityManager().createQuery("select p from Passenger p  where p.userName=:userName",
-                    Passenger.class)
-                    .setParameter("userName", userName).getResultList();
-        } catch (Exception exception) {
-            exception.printStackTrace();
+            passenger = getEntityManager()
+                    .createQuery("select p from Passenger p  where p.userName=:userName",
+                            Passenger.class)
+                    .setParameter("userName", userName)
+                    .getSingleResult();
+        } catch (NoResultException exception) {
+            exception.getMessage();
         }
 
-        return passenger.get(0);
-
+        return passenger;
     }
 }
