@@ -1,6 +1,7 @@
 package ru.tsystems.school.service.impl;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @AllArgsConstructor
+@Log4j
 public class StationServiceImpl implements StationService {
 
     private final StationDao stationDao;
@@ -106,7 +108,6 @@ public class StationServiceImpl implements StationService {
     @Override
     public void update(StationDto stationDto) {
 
-        Logger log = Logger.getRootLogger();
         log.info("station has: " + stationDto.getName() + " name before");
         Station station = stationDao.findById(stationDto.getId());
         station.setName(stationDto.getName());

@@ -2,6 +2,7 @@ package ru.tsystems.school.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.school.dao.TrainDao;
@@ -37,6 +38,7 @@ public class TrainServiceImpl implements TrainService {
     private final TrainMapper trainMapper;
     private final PassengerService passengerService;
     private final StationService stationService;
+    private final JmsTemplate jmsTemplate;
 
     @Override
     public List<TrainDto> findAllDtoTrains() {
@@ -67,6 +69,11 @@ public class TrainServiceImpl implements TrainService {
             }
         }
         trainDao.save(convertTrainToEntity(trainDto));
+//        jmsTemplate.send(session -> session.createTextMessage("Up and running")); // send object to queue
+
+
+
+
     }
 
     @Override
@@ -92,20 +99,6 @@ public class TrainServiceImpl implements TrainService {
                 .stream()
                 .map(passengerMapper::toDto)
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<TrainDto> findTrainDtoByNumber(String number) {
-
-        if (number == null) {
-            return null;
-        }
-
-        return trainDao.findByTrainNumber(number)
-                .stream()
-                .map(this::convertTrainToDto)
-                .collect(Collectors.toList());
-
     }
 
     @Override

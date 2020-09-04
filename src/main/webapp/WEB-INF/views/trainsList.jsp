@@ -23,10 +23,9 @@
 						<th>Train number</th>
 						<th>Seats amount</th>
 						<th>Buy ticket</th>
-						<th>Comments</th>
-						<security:authorize access="hasAuthority('ADMIN')">
-							<th>Action</th>
-						</security:authorize>
+						<th>Edit train</th>
+						<th>Delete train</th>
+
 					</tr>
 					<c:forEach items="${trains}" var="tempTrain">
 						<tr>
@@ -36,7 +35,8 @@
 							<td>${tempTrain.seatsAmount} </td>
 							<c:if test="${ticketsPassenger[tempTrain.id] eq true }">
 								<td>
-									<a href="${pageContext.request.contextPath}/trains/buy/${tempTrain.id}?fromStation=${fromStation}">Buy ticket</a>
+									<a href="${pageContext.request.contextPath}/trains/buy/${tempTrain.id}?fromStation=${fromStation}">Buy
+										ticket</a>
 								</td>
 							</c:if>
 							<c:if test="${ticketsPassenger[tempTrain.id] != true }">

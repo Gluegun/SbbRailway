@@ -3,6 +3,7 @@ package ru.tsystems.school.service;
 import ru.tsystems.school.dto.PassengerDto;
 import ru.tsystems.school.dto.StationDto;
 import ru.tsystems.school.dto.TrainDto;
+import ru.tsystems.school.model.Train;
 
 import java.util.List;
 
@@ -19,8 +20,6 @@ public interface TrainService {
     List<StationDto> findAllStations(int id);
 
     List<PassengerDto> findAllPassengers(int id);
-
-    List<TrainDto> findTrainDtoByNumber(String number);
 
     void update(TrainDto trainDto);
 

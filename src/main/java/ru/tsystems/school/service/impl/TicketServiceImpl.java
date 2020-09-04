@@ -11,14 +11,13 @@ import ru.tsystems.school.dto.PassengerDto;
 import ru.tsystems.school.dto.StationDto;
 import ru.tsystems.school.dto.TicketDto;
 import ru.tsystems.school.dto.TrainDto;
+import ru.tsystems.school.exceptions.CantBuyTicketException;
 import ru.tsystems.school.mapper.TicketMapper;
-import ru.tsystems.school.model.Passenger;
 import ru.tsystems.school.model.Ticket;
 import ru.tsystems.school.service.PassengerService;
 import ru.tsystems.school.service.StationService;
 import ru.tsystems.school.service.TicketService;
 import ru.tsystems.school.service.TrainService;
-import ru.tsystems.school.exceptions.CantBuyTicketException;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -102,10 +101,10 @@ public class TicketServiceImpl implements TicketService {
         TrainDto trainDtoById = trainService.findTrainById(trainId);
 
         List<Ticket> ticketsByTrainId = ticketDao.findTicketsByTrainId(trainId);
+
         for (Ticket ticket : ticketsByTrainId) {
-            List<Ticket> ticketsByPassengerId = ticketDao.findTicketsByPassengerId(passenger.getId());
-            if (ticket.getId() == ticketsByPassengerId.iterator().next().getId()) {
-                throw new CantBuyTicketException("Passenger has been already bought this ticket");
+            if (ticket.getPassenger().getUsername().equals(passenger.getUsername())) {
+                throw new CantBuyTicketException("Passenger has already bought this ticket");
             }
         }
 
@@ -123,8 +122,8 @@ public class TicketServiceImpl implements TicketService {
         ticket.setId(lastTicketId + 1);
         ticket.setDepartureTime(departureTime);
         ticket.setPassenger(passenger);
-
         trainDtoById.setSeatsAmount(trainDtoById.getSeatsAmount() - 1);
+
         trainService.update(trainDtoById);
         TrainDto trainDto = trainService.findTrainById(trainDtoById.getId());
 

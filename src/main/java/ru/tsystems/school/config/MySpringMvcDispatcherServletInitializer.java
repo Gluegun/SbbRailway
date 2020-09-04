@@ -10,8 +10,8 @@ import javax.servlet.Filter;
 public class MySpringMvcDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{PersistenceJPAConfig.class, SecurityConfig.class};
-    } 
+        return new Class[]{PersistenceJPAConfig.class, SecurityConfig.class, JmsConfig.class};
+    }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {

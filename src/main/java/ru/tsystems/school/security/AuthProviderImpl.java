@@ -1,9 +1,5 @@
 package ru.tsystems.school.security;
 
-import ru.tsystems.school.config.ApplicationContextHolder;
-import ru.tsystems.school.dao.impl.PassengerDaoImpl;
-import ru.tsystems.school.model.Passenger;
-
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,32 +10,35 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import ru.tsystems.school.config.ApplicationContextHolder;
+import ru.tsystems.school.dao.impl.PassengerDaoImpl;
+import ru.tsystems.school.model.Passenger;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 @Transactional
-//@AllArgsConstructor
 public class AuthProviderImpl implements AuthenticationProvider {
 
-
-	@Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    @Override
+    public Authentication authenticate(Authentication authentication) {
 
         String userName = authentication.getName();
-        PassengerDaoImpl passengerDao1=(PassengerDaoImpl)ApplicationContextHolder.getContext().getBean("passengerDaoImpl");
-        
-        Passenger passenger = passengerDao1.findByUserName(userName);
-           
+        PassengerDaoImpl passengerDao =
+                (PassengerDaoImpl) ApplicationContextHolder.getContext().getBean("passengerDaoImpl");
+
+        Passenger passenger = passengerDao.findByUserName(userName);
+
 
         if (passenger == null) {
-            throw new UsernameNotFoundException("User not found"); 
-            
+            throw new UsernameNotFoundException("User not found");
+
         }
 
         String password = authentication.getCredentials().toString();
-        if (!password.equals(passenger.getPassword())) {      
-        	 
+        if (!password.equals(passenger.getPassword())) {
+
             throw new BadCredentialsException("Bad credentials");
         }
 

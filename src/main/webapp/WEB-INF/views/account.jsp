@@ -14,35 +14,49 @@
 				<hr>
 				<h4 class="text-body">Hello, ${user.firstName} ${user.lastName}</h4>
 				<security:authorize access="hasAuthority('ADMIN')">
-					Role: <security:authentication property="principal.authorities"/>
+					<h6 class="mb-2">Role: <security:authentication property="principal.authorities"/></h6>
 				</security:authorize>
-				<div class="container-fluid mt-3">
-					<table class="table">
-						<tr>
-							<th>Train</th>
-							<th>Departure time</th>
-							<th>Delete ticket</th>
-						</tr>
-						<c:forEach var="ticket" items="${tickets}">
-							<tr>
-								<td>
-									<a href="${pageContext.request.contextPath}/trains/${ticket.train.id}">${ticket.train.trainNumber}</a>
-								</td>
-								<td>
-									<p>
-										<c:out value="${ticket.departureTime}"/>
-									</p>
-								</td>
-								<td>
-									<a href="<c:url value="/deleteTicket/${ticket.id}"/>">Delete ticket</a>
-								</td>
-							</tr>
-						</c:forEach>
-					</table>
+
+				<div id="accordion">
+					<div class="card">
+						<div class="card-header" id="headingOne">
+							<h5 class="mb-0">
+								<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne"
+								        aria-expanded="true" aria-controls="collapseOne">
+									Посмотреть билеты
+								</button>
+							</h5>
+						</div>
+						<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+							<div class="card-body">
+								<table class="table">
+									<tr>
+										<th>Train</th>
+										<th>Departure time</th>
+										<th>Delete ticket</th>
+									</tr>
+									<c:forEach var="ticket" items="${tickets}">
+										<tr>
+											<td>
+												<a href="${pageContext.request.contextPath}/trains/${ticket.train.id}">${ticket.train.trainNumber}</a>
+											</td>
+											<td>
+												<p>
+													<c:out value="${ticket.departureTime}"/>
+												</p>
+											</td>
+											<td>
+												<a href="<c:url value="/deleteTicket/${ticket.id}"/>">Delete ticket</a>
+											</td>
+										</tr>
+									</c:forEach>
+								</table>
+							</div>
+						</div>
+					</div>
 				</div>
 			</security:authorize>
-
-			<div class="contentContainer ml-3">
+			<div class="contentContainer ml-2 mt-2">
 				<security:authorize access="isAuthenticated()">
 					<form:form action="${pageContext.request.contextPath}/logout" method="post">
 						<input type="submit" value="Logout"/>

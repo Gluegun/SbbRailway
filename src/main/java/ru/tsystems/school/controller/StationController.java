@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import ru.tsystems.school.dto.ScheduleDto;
 import ru.tsystems.school.dto.StationDto;
 import ru.tsystems.school.dto.TrainDto;
@@ -37,7 +38,6 @@ public class StationController {
 
         List<StationDto> stationsDto = stationService.findAllStations();
         model.addAttribute("stations", stationsDto);
-
         return "stationsList";
     }
 
@@ -45,9 +45,7 @@ public class StationController {
     public String getTrainsForCurrentStation(Model model, @PathVariable int id) {
 
         StationDto stationDto = stationService.findStationById(id);
-
         List<ScheduleDto> allSchedulesForStation = stationService.findAllSchedulesForStation(id);
-
         model.addAttribute("station", stationDto);
         model.addAttribute("schedule", allSchedulesForStation);
 
@@ -57,10 +55,11 @@ public class StationController {
 
     @PostMapping("/add")
     public String saveStation(@ModelAttribute("stationDto") StationDto stationDto,
-                              Model model, NotUniqueNameException ex) {
+                              Model model, NotUniqueNameException ex, SessionStatus sessionStatus) {
 
         model.addAttribute("stationDto", new StationDto());
         model.addAttribute("msg", ex);
+        sessionStatus.setComplete();
         stationService.save(stationDto);
 
         return "redirect:/stations";
@@ -81,7 +80,6 @@ public class StationController {
     }
 
     @GetMapping("/editStation/{id}")
-
     public String updateStation(@PathVariable int id, Model model) {
 
         StationDto stationDtoById = stationService.findStationById(id);
@@ -96,8 +94,9 @@ public class StationController {
     }
 
     @PostMapping("/updateStation")
-    public String editStation(@ModelAttribute("stationDto") StationDto station) {
+    public String editStation(@ModelAttribute("stationDto") StationDto station, SessionStatus sessionStatus) {
         stationService.update(station);
+        sessionStatus.setComplete();
         return "redirect:/stations";
     }
 

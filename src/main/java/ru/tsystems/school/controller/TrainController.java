@@ -1,10 +1,11 @@
 package ru.tsystems.school.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import ru.tsystems.school.dto.PassengerDto;
 import ru.tsystems.school.dto.ScheduleDto;
 import ru.tsystems.school.dto.StationDto;
@@ -26,6 +27,7 @@ public class TrainController {
     private final TrainService trainService;
     private final TicketService ticketService;
     private final ScheduleService scheduleService;
+    private final JmsTemplate jmsTemplate;
 
     @ModelAttribute("trainDto")
     public TrainDto getTrainDto() {
@@ -61,9 +63,10 @@ public class TrainController {
 
     @PostMapping("/add")
     public String saveTrain(@ModelAttribute("trainDto") TrainDto train,
-                            Model model) {
+                            Model model, SessionStatus sessionStatus) {
 
         model.addAttribute("trainDto", new TrainDto());
+        sessionStatus.setComplete();
         trainService.save(train);
 
         return "redirect:/trains";
@@ -106,8 +109,9 @@ public class TrainController {
     }
 
     @PostMapping("/update")
-    public String editTrain(@ModelAttribute("trainDto") TrainDto train) {
+    public String editTrain(@ModelAttribute("trainDto") TrainDto train, SessionStatus sessionStatus) {
         trainService.update(train);
+        sessionStatus.setComplete();
         return "redirect:/trains";
     }
 
@@ -116,6 +120,22 @@ public class TrainController {
         trainService.deleteById(id);
         return "redirect:/trains";
     }
+
+    @GetMapping("/rest/")
+    @ResponseBody
+    public List<TrainDto> getTrainsREST() {
+
+        List<TrainDto> allDtoTrains = trainService.findAllDtoTrains();
+        return allDtoTrains;
+    }
+
+    @GetMapping(value = "/rest/send/{message}", produces = "text/html")
+    @ResponseBody
+    public String sendMessage(@PathVariable String message) {
+        jmsTemplate.convertAndSend("testQueue", message);
+        return "done";
+    }
+
 }
 
 

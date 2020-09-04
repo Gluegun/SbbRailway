@@ -66,8 +66,7 @@ public class TrainDto {
         if (trainNumber == null) {
             if (other.trainNumber != null)
                 return false;
-        } else if (!trainNumber.equals(other.trainNumber))
-            return false;
+        } else return trainNumber.equals(other.trainNumber);
         return true;
     }
 

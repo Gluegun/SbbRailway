@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(authProvider);
     }
 
@@ -53,19 +53,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/trains/add").hasAuthority("ADMIN")
-                .antMatchers("/trains").hasAuthority("ADMIN")
-                .antMatchers("/stations/add").hasAuthority("ADMIN")
-                .antMatchers("/passengers/**").hasAuthority("ADMIN")
+                .antMatchers("/trains/add", "/trains", "/stations/add", "/passengers/**")
+                .hasAuthority("ADMIN")
                 .antMatchers("/login").anonymous()
                 .antMatchers("/account").authenticated()
-                .and()
+                 .and()
                 .formLogin().loginPage("/login")
                 .loginProcessingUrl("/authenticateTheUser")
                 .failureUrl("/login?error=true")
-                .and()
+                    .and()
                 .logout()
-                .and()
+                 .and()
                 .exceptionHandling().accessDeniedPage("/");
     }
 }
