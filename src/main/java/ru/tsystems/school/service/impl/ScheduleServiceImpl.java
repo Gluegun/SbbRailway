@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.school.dao.ScheduleDao;
 import ru.tsystems.school.dto.ScheduleDto;
 import ru.tsystems.school.mapper.ScheduleMapper;
+import ru.tsystems.school.model.Schedule;
 import ru.tsystems.school.service.ScheduleService;
 
 import java.util.List;
@@ -29,6 +30,14 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         return scheduleDao.findSchedulesByTrainId(id)
                 .stream()
+                .map(scheduleMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ScheduleDto> findScheduleByStationId(int stationId) {
+        List<Schedule> schedulesByStationId = scheduleDao.findSchedulesByStationId(stationId);
+        return schedulesByStationId.stream()
                 .map(scheduleMapper::toDto)
                 .collect(Collectors.toList());
 

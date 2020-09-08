@@ -18,19 +18,7 @@ import ru.tsystems.school.security.AuthProviderImpl;
 @EnableWebSecurity
 @AllArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@ComponentScan({
-        "ru.tsystems.school",
-        "ru.tsystems.school.config",
-        "ru.tsystems.school.controller",
-        "ru.tsystems.school.dao",
-        "ru.tsystems.school.dao.impl",
-        "ru.tsystems.school.dto",
-        "ru.tsystems.school.mapper",
-        "ru.tsystems.school.model",
-        "ru.tsystems.school.security",
-        "ru.tsystems.school.service",
-        "ru.tsystems.school.service.impl",
-})
+@ComponentScan("ru.tsystems.school")
 @Log4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 

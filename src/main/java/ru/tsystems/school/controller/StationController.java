@@ -95,6 +95,7 @@ public class StationController {
 
     @PostMapping("/updateStation")
     public String editStation(@ModelAttribute("stationDto") StationDto station, SessionStatus sessionStatus) {
+
         stationService.update(station);
         sessionStatus.setComplete();
         return "redirect:/stations";

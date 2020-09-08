@@ -1,8 +1,10 @@
 package ru.tsystems.school.config;
 
+import lombok.val;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -11,22 +13,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import ru.tsystems.school.dao.PassengerDao;
 import ru.tsystems.school.dao.impl.PassengerDaoImpl;
+import ru.tsystems.school.dto.TrainDto;
+
+import java.util.Collections;
 
 
 @Configuration
-@ComponentScan({
-        "ru.tsystems.school",
-        "ru.tsystems.school.config",
-        "ru.tsystems.school.controller",
-        "ru.tsystems.school.dao",
-        "ru.tsystems.school.dao.impl",
-        "ru.tsystems.school.dto",
-        "ru.tsystems.school.mapper",
-        "ru.tsystems.school.model",
-        "ru.tsystems.school.security",
-        "ru.tsystems.school.service",
-        "ru.tsystems.school.service.impl",
-})
+@ComponentScan("ru.tsystems.school")
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
 
@@ -55,4 +48,14 @@ public class SpringConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/static/**")
                 .addResourceLocations("/static/");
     }
+
+    @Bean
+    public MappingJackson2MessageConverter messageConverter() {
+
+        val converter = new MappingJackson2MessageConverter();
+        converter.setTypeIdPropertyName("content-type");
+        converter.setTypeIdMappings(Collections.singletonMap("train", TrainDto.class));
+        return converter;
+    }
+
 }

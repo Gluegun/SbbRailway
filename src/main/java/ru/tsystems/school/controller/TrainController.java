@@ -68,6 +68,7 @@ public class TrainController {
         model.addAttribute("trainDto", new TrainDto());
         sessionStatus.setComplete();
         trainService.save(train);
+        jmsTemplate.convertAndSend(train);
 
         return "redirect:/trains";
     }
@@ -111,29 +112,18 @@ public class TrainController {
     @PostMapping("/update")
     public String editTrain(@ModelAttribute("trainDto") TrainDto train, SessionStatus sessionStatus) {
         trainService.update(train);
+        jmsTemplate.convertAndSend(train);
         sessionStatus.setComplete();
         return "redirect:/trains";
     }
 
     @GetMapping("delete/{id}")
     public String deleteTrain(@PathVariable int id) {
+
+        TrainDto trainDto = trainService.findTrainById(id);
         trainService.deleteById(id);
+        jmsTemplate.convertAndSend(trainDto);
         return "redirect:/trains";
-    }
-
-    @GetMapping("/rest/")
-    @ResponseBody
-    public List<TrainDto> getTrainsREST() {
-
-        List<TrainDto> allDtoTrains = trainService.findAllDtoTrains();
-        return allDtoTrains;
-    }
-
-    @GetMapping(value = "/rest/send/{message}", produces = "text/html")
-    @ResponseBody
-    public String sendMessage(@PathVariable String message) {
-        jmsTemplate.convertAndSend("testQueue", message);
-        return "done";
     }
 
 }

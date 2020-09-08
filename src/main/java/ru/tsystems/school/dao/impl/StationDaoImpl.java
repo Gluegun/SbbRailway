@@ -1,6 +1,5 @@
 package ru.tsystems.school.dao.impl;
 
-import org.hibernate.type.IntegerType;
 import org.springframework.stereotype.Repository;
 import ru.tsystems.school.dao.AbstractJpaDao;
 import ru.tsystems.school.dao.ScheduleDao;
@@ -108,36 +107,6 @@ public class StationDaoImpl extends AbstractJpaDao<Station> implements StationDa
         }
 
         return new ArrayList<>(trainsSet);
-//        List<Train> allTrains = trainDao.findAll();
-//
-//        List<Train> findTrains = new ArrayList<>();
-//
-//        for (Train train : allTrains) {
-//            if (train.getSeatsAmount() > 0) { // no free places
-//                List<Schedule> schedules =
-//                        getEntityManager().createQuery(
-//                                "select s from Schedule s where s.train.id =:id order by s.departureTime",
-//                                Schedule.class)
-//                                .setParameter("id", train.getId())
-//                                .getResultList();
-//
-//                List<Station> trainRoute = schedules.stream().map(Schedule::getStation).collect(Collectors.toList());
-//
-//                LocalTime now = LocalTime.now();
-//                if (trainRoute.contains(from) && trainRoute.contains(to))
-//                    if (trainRoute.indexOf(from) < trainRoute.indexOf(to))
-//                        for (Schedule schedule : schedules) {
-//                            if (schedule.getStation().getId() == from.getId()) {
-//                                if (schedule.getDepartureTime().minusHours(3).isAfter(LocalTime.parse(fromTime))
-//                                        && schedule.getDepartureTime().minusHours(3).isBefore(LocalTime.parse(toTime))) {
-//                                    if (Math.abs(ChronoUnit.MINUTES.between(schedule.getDepartureTime().minusHours(3), now)) > 10)
-//                                        findTrains.add(train);
-//                                }
-//                            }
-//                        }
-//            }
-//        }
-//        return findTrains;
 
     }
 

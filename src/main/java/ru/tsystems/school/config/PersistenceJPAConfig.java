@@ -21,20 +21,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({
-        "ru.tsystems.school",
-        "ru.tsystems.school.config",
-        "ru.tsystems.school.controller",
-        "ru.tsystems.school.dao",
-        "ru.tsystems.school.dao.impl",
-        "ru.tsystems.school.dto",
-        "ru.tsystems.school.mapper",
-        "ru.tsystems.school.mapper.impl",
-        "ru.tsystems.school.model",
-        "ru.tsystems.school.security",
-        "ru.tsystems.school.service",
-        "ru.tsystems.school.service.impl",
-})
+@ComponentScan("ru.tsystems.school")
 @PropertySource(value = "classpath:application.properties")
 @Log4j
 public class PersistenceJPAConfig {

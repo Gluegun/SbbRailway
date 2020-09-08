@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.school.dao.PassengerDao;
 import ru.tsystems.school.dao.TrainDao;
-import ru.tsystems.school.dto.PassengerDto;
 import ru.tsystems.school.dto.TicketDto;
 import ru.tsystems.school.mapper.PassengerMapper;
 import ru.tsystems.school.mapper.TicketMapper;

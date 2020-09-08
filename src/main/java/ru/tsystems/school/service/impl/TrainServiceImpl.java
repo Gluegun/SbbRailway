@@ -71,16 +71,13 @@ public class TrainServiceImpl implements TrainService {
         trainDao.save(convertTrainToEntity(trainDto));
 //        jmsTemplate.send(session -> session.createTextMessage("Up and running")); // send object to queue
 
-
-
-
     }
 
     @Override
     public void deleteById(int id) {
 
         Train train = trainDao.findById(id);
-        if (train.getPassengers().size() > 0) {
+        if (train.getPassengers().isEmpty()) {
             throw new CantDeleteException("Train is not empty!");
         } else trainDao.deleteById(id);
     }
@@ -133,6 +130,9 @@ public class TrainServiceImpl implements TrainService {
         scheduleDto.setTrain(trainDto);
         scheduleDto.setStation(stationFoundByName);
         stationService.saveSchedule(scheduleDto);
+        jmsTemplate.send(session -> session.createTextMessage("schedule added: " +
+                scheduleDto.getTrain().getTrainNumber() + " departs from " +
+                scheduleDto.getStation().getName() + " station at " + scheduleDto.getDepartureTime()));
 
     }
 

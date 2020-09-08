@@ -2,7 +2,7 @@ package ru.tsystems.school.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import org.apache.log4j.Logger;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.school.dao.StationDao;
@@ -35,6 +35,7 @@ public class StationServiceImpl implements StationService {
     private final TrainMapper trainMapper;
     private final ScheduleMapper scheduleMapper;
     private final TrainDao trainDao;
+    private final JmsTemplate jmsTemplate;
 
     @Override
     public void save(StationDto stationDto) {
@@ -46,12 +47,16 @@ public class StationServiceImpl implements StationService {
             }
         }
         stationDao.save(stationMapper.toEntity(stationDto));
+        jmsTemplate.send(session -> session.createTextMessage("station " + stationDto.getName() + " created"));
     }
 
     @Override
     public void deleteStationById(int id) {
 
+        StationDto stationById = findStationById(id);
         stationDao.deleteById(id);
+        jmsTemplate.send(session -> session.createTextMessage("station " + stationById.getName() + " was deleted"));
+
     }
 
     @Override
@@ -83,6 +88,11 @@ public class StationServiceImpl implements StationService {
     @Override
     public void saveSchedule(ScheduleDto schedule) {
         stationDao.saveSchedule(scheduleMapper.toEntity(schedule));
+
+        jmsTemplate.send(session -> session.createTextMessage("schedule added: " +
+                schedule.getTrain().getTrainNumber() + " departs from " +
+                schedule.getStation().getName() + " station at " + schedule.getDepartureTime()));
+
     }
 
     @Override
@@ -113,6 +123,7 @@ public class StationServiceImpl implements StationService {
         station.setName(stationDto.getName());
         stationDao.update(station);
         log.info("now it has: " + station.getName());
+        jmsTemplate.send(session -> session.createTextMessage("station updated: " + stationDto.getName()));
 
     }
 
