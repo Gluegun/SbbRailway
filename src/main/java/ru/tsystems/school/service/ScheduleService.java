@@ -14,4 +14,6 @@ public interface ScheduleService {
 
     List<ScheduleDto> findScheduleByStationId(int stationId);
 
+    void deleteTrainFromSchedule(int trainId, int stationId);
+
 }

@@ -6,21 +6,28 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tsystems.school.dto.ScheduleDto;
+import ru.tsystems.school.dto.StationDto;
 import ru.tsystems.school.service.ScheduleService;
+import ru.tsystems.school.service.StationService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/rest/schedule/")
+@RequestMapping("/rest/")
 @AllArgsConstructor
 public class ScheduleControllerRest {
 
     private final ScheduleService scheduleService;
+    private final StationService stationService;
 
-    @GetMapping("/{id}")
+    @GetMapping("schedule/{id}")
     public List<ScheduleDto> getSchedules(@PathVariable("id") int stationId) {
         return scheduleService.findScheduleByStationId(stationId);
     }
 
+    @GetMapping("stations")
+    public List<StationDto> getStations() {
+        return stationService.findAllStations();
+    }
 }
 

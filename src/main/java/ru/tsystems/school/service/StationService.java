@@ -16,6 +16,8 @@ public interface StationService {
 
     void update(StationDto stationDto);
 
+    void update(int id, StationDto stationDto);
+
     void deleteStationById(int id);
 
     List<TrainDto> findAllTrainsForCurrentStation(int id);
@@ -32,7 +34,7 @@ public interface StationService {
 
     List<TrainDto> potentialTrainsForStation(int stationId);
 
-    void addTrainToStation(String departureTime,
+    void addTrainToStation(String departureTime, String arrivalTime,
                            String train, StationDto stationDto,
                            int id);
 

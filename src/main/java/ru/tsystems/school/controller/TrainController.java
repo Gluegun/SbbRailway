@@ -74,10 +74,13 @@ public class TrainController {
     }
 
     @GetMapping("/{id}/addStation")
-    public String addStation(@RequestParam String departureTime, @RequestParam String station,
-                             @ModelAttribute("TrainDto") TrainDto trainDto, @PathVariable int id) {
+    public String addStation(@RequestParam String departureTime,
+                             @RequestParam String arrivalTime,
+                             @RequestParam String station,
+                             @ModelAttribute("TrainDto") TrainDto trainDto,
+                             @PathVariable int id) {
 
-        trainService.addStationToTrain(departureTime, station, trainDto, id);
+        trainService.addStationToTrain(departureTime, arrivalTime, station, trainDto, id);
 
         return "redirect:/trains";
     }
@@ -122,9 +125,19 @@ public class TrainController {
 
         TrainDto trainDto = trainService.findTrainById(id);
         trainService.deleteById(id);
-        jmsTemplate.convertAndSend(trainDto);
         return "redirect:/trains";
     }
+
+    @GetMapping("{trainId}/delete/{stationId}")
+    public String deleteTrainFromSchedule(
+            @PathVariable int trainId,
+            @PathVariable int stationId) {
+
+        scheduleService.deleteTrainFromSchedule(trainId, stationId);
+        return "redirect:/trains/{trainId}";
+
+    }
+
 
 }
 

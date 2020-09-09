@@ -47,4 +47,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     public void deleteById(int id) {
         scheduleDao.deleteById(id);
     }
+
+    @Override
+    public void deleteTrainFromSchedule(int stationId, int trainId) {
+
+        scheduleDao.deleteTrainFromSchedule(stationId, trainId);
+
+    }
 }

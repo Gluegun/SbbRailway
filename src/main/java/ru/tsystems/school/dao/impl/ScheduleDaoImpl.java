@@ -39,4 +39,14 @@ public class ScheduleDaoImpl extends AbstractJpaDao<Schedule> implements Schedul
                 .setParameter("id", id)
                 .getResultList();
     }
+
+    @Override
+    public void deleteTrainFromSchedule(int trainId, int stationId) {
+
+        getEntityManager().createNativeQuery("delete from railway.schedule where station_id =:stationId" +
+                " and train_id =:trainId")
+                .setParameter("stationId", stationId)
+                .setParameter("trainId", trainId)
+                .executeUpdate();
+    }
 }

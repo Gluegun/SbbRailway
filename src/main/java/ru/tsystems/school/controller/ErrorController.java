@@ -38,6 +38,16 @@ public class ErrorController {
         return "errors/same_name";
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public ModelAndView cantCreate(RuntimeException e) {
+        log.error(EXCEPTION, e);
+        ModelAndView modelAndView = new ModelAndView("errors/cant_do_it");
+        String message = e.getMessage();
+        modelAndView.addObject("message", message);
+        return modelAndView;
+
+    }
+
     @ExceptionHandler(NoSuchEntityException.class)
     public String notFound(NoSuchEntityException exception) {
         log.error(EXCEPTION, exception);

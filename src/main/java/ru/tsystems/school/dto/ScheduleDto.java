@@ -12,17 +12,17 @@ public class ScheduleDto {
     private int id;
     private TrainDto train;
     private LocalTime departureTime;
+    private LocalTime arrivalTime;
     private StationDto station;
 
     public ScheduleDto() {
 
     }
 
-    public ScheduleDto(TrainDto train, LocalTime departureTime, StationDto station) {
+    public ScheduleDto(TrainDto train, LocalTime departureTime, LocalTime arrivalTime, StationDto station) {
         this.train = train;
-        this.setDepartureTime(departureTime);
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
         this.station = station;
     }
-
-
 }

@@ -28,6 +28,7 @@ public class ScheduleMapperImpl implements ScheduleMapper {
                     trainMapper.toDto(schedule.getTrain())
             );
             scheduleDto.setDepartureTime(schedule.getDepartureTime());
+            scheduleDto.setArrivalTime(schedule.getArrivalTime());
             scheduleDto.setStation(
                     stationMapper.toDto(schedule.getStation())
             );
@@ -43,6 +44,7 @@ public class ScheduleMapperImpl implements ScheduleMapper {
         if (scheduleDto != null) {
             schedule.setId(scheduleDto.getId());
             schedule.setDepartureTime(scheduleDto.getDepartureTime());
+            schedule.setArrivalTime(scheduleDto.getArrivalTime());
             schedule.setTrain(trainMapper.toEntity(scheduleDto.getTrain()));
             schedule.setStation(stationMapper.toEntity(scheduleDto.getStation()));
         }

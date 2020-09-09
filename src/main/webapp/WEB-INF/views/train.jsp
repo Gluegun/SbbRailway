@@ -16,29 +16,28 @@
 	<body>
 		<%@include file="header.jsp" %>
 		<div class="container-fluid mt-3">
+			<h5><c:out value="Route for Train ${train.trainNumber}"/></h5>
 			<table class="table">
+
 				<tr>
-					<th>Train number</th>
-					<th>Seats amount</th>
-					<th>Stations</th>
+					<th>Station</th>
+					<th>Arrival time</th>
 					<th>Departure time</th>
+					<security:authorize access="hasAuthority('ADMIN')">
+						<th>Delete</th>
+					</security:authorize>
 				</tr>
-				<tr>
-					<td><c:out value="${train.trainNumber}"/></td>
-					<td><c:out value="${train.seatsAmount}"/></td>
-					<td>
-						<c:forEach var="tempSchedule" items="${schedules}">
-							<p><a href="/stations/${tempSchedule.station.id}">${tempSchedule.station.name}</a></p>
-						</c:forEach>
-					</td>
-					<td>
-						<c:forEach var="tempSchedule" items="${schedules}">
-							<p>
-								${tempSchedule.departureTime}
-							</p>
-						</c:forEach>
-					</td>
-				</tr>
+				<c:forEach items="${schedules}" var="tempSchedule">
+					<tr>
+						<td><a href="/stations/${tempSchedule.station.id}">${tempSchedule.station.name}</a></td>
+						<td>${tempSchedule.arrivalTime}</td>
+						<td>${tempSchedule.departureTime}</td>
+						<security:authorize access="hasAuthority('ADMIN')">
+							<td>
+								<a href="<c:url value="/trains/${tempSchedule.train.id}/delete/${tempSchedule.station.id}"/>">X</a></td>
+						</security:authorize>
+					</tr>
+				</c:forEach>
 			</table>
 			<security:authorize access="hasAuthority('ADMIN')">
 				<div id="accordion">

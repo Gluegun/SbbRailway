@@ -1,5 +1,6 @@
 package ru.tsystems.school.service.impl;
 
+import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.jms.core.JmsTemplate;
@@ -40,10 +41,16 @@ public class StationServiceImpl implements StationService {
     @Override
     public void save(StationDto stationDto) {
 
+        if (stationDto.getName().isEmpty()) {
+            throw new RuntimeException("Station name is empty");
+        }
+
         List<Station> stations = stationDao.findAll();
-        for (Station station : stations) {
-            if (stationDto.getName().equals(station.getName())) {
-                throw new NotUniqueNameException("Station with such name already exists");
+        if (!stations.isEmpty()) {
+            for (Station station : stations) {
+                if (stationDto.getName().equals(station.getName())) {
+                    throw new NotUniqueNameException("Station with such name already exists");
+                }
             }
         }
         stationDao.save(stationMapper.toEntity(stationDto));
@@ -128,6 +135,15 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
+    public void update(int id, StationDto stationDto) {
+
+        Station byId = stationDao.findById(id);
+        byId.setName(stationDto.getName());
+        stationDao.update(id, stationMapper.toEntity(stationDto));
+
+    }
+
+    @Override
     public StationDto findByStationName(String name) {
         Station stationFromDb = stationDao.findByStationName(name);
         return stationMapper.toDto(stationFromDb);
@@ -170,7 +186,7 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public void addTrainToStation(String departureTime, String train, StationDto stationDto,
+    public void addTrainToStation(String departureTime, String arrivalTime, String train, StationDto stationDto,
                                   int id) {
 
         StationDto station = findStationById(id);
@@ -178,9 +194,15 @@ public class StationServiceImpl implements StationService {
         Train train1 = trainDao.findByTrainNumber(train).get(0);
         TrainDto trainDto = trainMapper.toDto(train1);
         LocalTime departureTimeLocalTime = LocalTime.parse(departureTime);
+        LocalTime arrivalTimeLocalTime = LocalTime.parse(arrivalTime);
         scheduleDto.setDepartureTime(departureTimeLocalTime);
+        scheduleDto.setArrivalTime(arrivalTimeLocalTime);
         scheduleDto.setTrain(trainDto);
         scheduleDto.setStation(station);
         saveSchedule(scheduleDto);
+
+        Gson gson = new Gson();
+        String jsonSchedule = gson.toJson(scheduleDto);
+        jmsTemplate.send(session -> session.createTextMessage(jsonSchedule));
     }
 }

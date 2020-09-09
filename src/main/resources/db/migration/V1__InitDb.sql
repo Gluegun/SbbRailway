@@ -46,6 +46,7 @@ create table schedule
 (
     id             integer not null auto_increment,
     departure_time time,
+    arrival_time   time,
     station_id     integer not null,
     train_id       integer not null,
     primary key (id)

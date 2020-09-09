@@ -9,6 +9,8 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "schedule")
+@Getter
+@Setter
 public class Schedule extends AbstractPo implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -17,6 +19,9 @@ public class Schedule extends AbstractPo implements Serializable {
 
     @Column(name = "departure_time")
     private LocalTime departureTime;
+
+    @Column(name = "arrival_time")
+    private LocalTime arrivalTime;
 
     @ManyToOne
     @JoinColumn(name = "station_id", nullable = false)
@@ -29,29 +34,5 @@ public class Schedule extends AbstractPo implements Serializable {
     }
 
     public Schedule() {
-    }
-
-    public Train getTrain() {
-        return train;
-    }
-
-    public void setTrain(Train train) {
-        this.train = train;
-    }
-
-    public LocalTime getDepartureTime() {
-        return departureTime;
-    }
-
-    public void setDepartureTime(LocalTime departureTime) {
-        this.departureTime = departureTime;
-    }
-
-    public Station getStation() {
-        return station;
-    }
-
-    public void setStation(Station station) {
-        this.station = station;
     }
 }

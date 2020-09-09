@@ -14,8 +14,10 @@ public interface StationDao {
     Station findById(int id);
 
     void save(Station station);
-    
+
     void update(Station station);
+
+    void update(int id, Station station);
 
     void deleteById(int id);
 
@@ -24,12 +26,12 @@ public interface StationDao {
     List<Schedule> findScheduleForStation(int id);
 
     List<Train> findSuitableTrains(Station from, Station to, String fromTime, String toTime);
-    
+
     Station findByStationName(String name);
 
     void addSchedule(int stationId, int trainId, LocalTime arrivalTime);
 
     void saveSchedule(Schedule schedule);
-    
+
     List<Schedule> findScheduleForStationAndTrain(int stationId, int trainId);
 }

@@ -17,25 +17,28 @@
 	<body>
 		<%@include file="header.jsp" %>
 		<div class="container-fluid mt-3">
-			<table class="table">
+			<h5><c:out value="Schedule for ${station.name} station"/></h5>
+			<table class="table mt-3">
 				<tr>
-					<th>Station name</th>
 					<th>Trains</th>
+					<th>Arrival time</th>
 					<th>Departure time</th>
+					<security:authorize access="hasAuthority('ADMIN')">
+						<th>Delete from schedule</th>
+					</security:authorize>
 				</tr>
-				<tr>
-					<td><c:out value="${station.name}"/></td>
-					<td>
-						<c:forEach var="tempSchedule" items="${schedule}">
-							<p><a href="/trains/${tempSchedule.train.id}">${tempSchedule.train.trainNumber}</a></p>
-						</c:forEach>
-					</td>
-					<td>
-						<c:forEach var="schedule" items="${schedule}">
-							<p><c:out value="${schedule.departureTime}"/></p>
-						</c:forEach>
-					</td>
-				</tr>
+				<c:forEach var="tempSchedule" items="${schedule}">
+					<tr>
+						<td><a href="/trains/${tempSchedule.train.id}">${tempSchedule.train.trainNumber}</a></td>
+						<td>${tempSchedule.arrivalTime}</td>
+						<td>${tempSchedule.departureTime}</td>
+						<security:authorize access="hasAuthority('ADMIN')">
+							<td>
+								<a href="<c:url value="/stations/${tempSchedule.station.id}/delete/${tempSchedule.train.id}"/>">X</a>
+							</td>
+						</security:authorize>
+					</tr>
+				</c:forEach>
 			</table>
 		</div>
 		<%@include file="footer.jsp" %>

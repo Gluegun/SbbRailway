@@ -22,7 +22,7 @@ public interface TrainService {
 
     void update(TrainDto trainDto);
 
-    void addStationToTrain(String departureTime, String station, TrainDto trainDto, int id);
+    void addStationToTrain(String departureTime, String arrivalTime, String station, TrainDto trainDto, int id);
 
     List <StationDto> potentialStationsForTrain(int trainId);
 

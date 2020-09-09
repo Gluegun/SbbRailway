@@ -46,7 +46,7 @@
 												</p>
 											</td>
 											<td>
-												<a href="<c:url value="/deleteTicket/${ticket.id}"/>">Delete ticket</a>
+												<a href="<c:url value="/deleteTicket/${ticket.id}"/>">X</a>
 											</td>
 										</tr>
 									</c:forEach>

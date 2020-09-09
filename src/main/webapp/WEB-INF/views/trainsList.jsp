@@ -58,7 +58,7 @@
 									<a href="<c:url value="/trains/edit/${tempTrain.id}"/>">Update train</a>
 								</td>
 								<td>
-									<a href="<c:url value="/trains/delete/${tempTrain.id}"/>">Delete train</a>
+									<a href="<c:url value="/trains/delete/${tempTrain.id}"/>">X</a>
 								</td>
 							</security:authorize>
 						</tr>

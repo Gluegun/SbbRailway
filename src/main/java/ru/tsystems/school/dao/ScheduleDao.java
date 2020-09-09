@@ -17,6 +17,8 @@ public interface ScheduleDao {
     List<Schedule> findSchedulesByTrainId(int id);
     
     List<Schedule> findSchedulesByStationId(int id);
+
+    void deleteTrainFromSchedule(int trainId, int stationId);
     
 
 }

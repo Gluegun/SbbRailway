@@ -63,6 +63,20 @@ public class StationDaoImpl extends AbstractJpaDao<Station> implements StationDa
     }
 
     @Override
+    public void update(int id, Station station) {
+
+        Station byId = findById(id);
+
+        getEntityManager().createQuery("update Station s set s.name=:name, s.id=:id where s.id=:dbStationId")
+                .setParameter("name", station.getName())
+                .setParameter("id", station.getId())
+                .setParameter("dbStationId", byId.getId())
+                .executeUpdate();
+
+
+    }
+
+    @Override
     public void addSchedule(int stationId, int trainId, LocalTime arrivalTime) {
 
         try {

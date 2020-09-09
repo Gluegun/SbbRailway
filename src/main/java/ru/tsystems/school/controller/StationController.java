@@ -10,6 +10,7 @@ import ru.tsystems.school.dto.StationDto;
 import ru.tsystems.school.dto.TrainDto;
 import ru.tsystems.school.exceptions.NotUniqueNameException;
 import ru.tsystems.school.model.Schedule;
+import ru.tsystems.school.service.ScheduleService;
 import ru.tsystems.school.service.StationService;
 
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.List;
 public class StationController {
 
     private final StationService stationService;
+    private final ScheduleService scheduleService;
 
     @ModelAttribute("stationDto")
     public StationDto stationDto() {
@@ -67,10 +69,11 @@ public class StationController {
 
     @GetMapping("/{id}/addTrain")
     public String addTrain(@RequestParam String departureTime,
+                           @RequestParam String arrivalTime,
                            @RequestParam String train, @ModelAttribute("StationDto") StationDto stationDto,
                            @PathVariable int id) {
 
-        stationService.addTrainToStation(departureTime, train, stationDto, id);
+        stationService.addTrainToStation(departureTime, arrivalTime, train, stationDto, id);
         return "redirect:/stations";
     }
 
@@ -106,6 +109,15 @@ public class StationController {
     public String deleteStation(@PathVariable int id) {
         stationService.deleteStationById(id);
         return "redirect:/stations";
+    }
+
+    @GetMapping("/{stationId}/delete/{trainId}")
+    public String deleteTrainFromStationSchedule(@PathVariable int stationId,
+                                                 @PathVariable int trainId) {
+
+        scheduleService.deleteTrainFromSchedule(trainId, stationId);
+        return "redirect:/stations/{stationId}";
+
     }
 
 }

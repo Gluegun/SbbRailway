@@ -69,7 +69,6 @@ public class TrainServiceImpl implements TrainService {
             }
         }
         trainDao.save(convertTrainToEntity(trainDto));
-//        jmsTemplate.send(session -> session.createTextMessage("Up and running")); // send object to queue
 
     }
 
@@ -121,18 +120,18 @@ public class TrainServiceImpl implements TrainService {
     }
 
     @Override
-    public void addStationToTrain(String departureTime, String station, TrainDto trainDto, int id) {
+    public void addStationToTrain(String departureTime, String arrivalTime,
+                                  String station, TrainDto trainDto, int id) {
 
         StationDto stationFoundByName = stationService.findByStationName(station);
         ScheduleDto scheduleDto = new ScheduleDto();
         LocalTime departureTimeLocalTime = LocalTime.parse(departureTime);
+        LocalTime arrivalTimeLocalTime = LocalTime.parse(arrivalTime);
         scheduleDto.setDepartureTime(departureTimeLocalTime);
+        scheduleDto.setArrivalTime(arrivalTimeLocalTime);
         scheduleDto.setTrain(trainDto);
         scheduleDto.setStation(stationFoundByName);
         stationService.saveSchedule(scheduleDto);
-        jmsTemplate.send(session -> session.createTextMessage("schedule added: " +
-                scheduleDto.getTrain().getTrainNumber() + " departs from " +
-                scheduleDto.getStation().getName() + " station at " + scheduleDto.getDepartureTime()));
 
     }
 
