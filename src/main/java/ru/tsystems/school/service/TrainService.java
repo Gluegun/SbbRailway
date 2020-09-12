@@ -18,12 +18,14 @@ public interface TrainService {
 
     List<StationDto> findAllStations(int id);
 
-    List<PassengerDto> findAllPassengers(int id);
+    List<PassengerDto> findAllPassengersForTrain(int trainId);
 
     void update(TrainDto trainDto);
 
     void addStationToTrain(String departureTime, String arrivalTime, String station, TrainDto trainDto, int id);
 
-    List <StationDto> potentialStationsForTrain(int trainId);
+    List<StationDto> potentialStationsForTrain(int trainId);
+
+    int amountOfTicketsSoldForTrain(int trainId);
 
 }

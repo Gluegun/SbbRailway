@@ -18,9 +18,11 @@ public class ErrorController {
     private static final String EXCEPTION = "Exception";
 
     @ExceptionHandler(CantDeleteException.class)
-    public String cantDelete(CantDeleteException exception) {
+    public ModelAndView cantDelete(CantDeleteException exception) {
         log.error(EXCEPTION, exception);
-        return "errors/cant_delete";
+        ModelAndView modelAndView = new ModelAndView("errors/cant_delete");
+        modelAndView.addObject("msg", exception.getMessage());
+        return modelAndView;
     }
 
     @ExceptionHandler(CantBuyTicketException.class)
@@ -38,20 +40,19 @@ public class ErrorController {
         return "errors/same_name";
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ModelAndView cantCreate(RuntimeException e) {
-        log.error(EXCEPTION, e);
-        ModelAndView modelAndView = new ModelAndView("errors/cant_do_it");
-        String message = e.getMessage();
-        modelAndView.addObject("message", message);
-        return modelAndView;
-
-    }
+//    @ExceptionHandler(RuntimeException.class)
+//    public ModelAndView cantCreate(RuntimeException e) {
+//        log.error(EXCEPTION, e);
+//        ModelAndView modelAndView = new ModelAndView("errors/cant_do_it");
+//        String message = e.getMessage();
+//        modelAndView.addObject("message", message);
+//        return modelAndView;
+//
+//    }
 
     @ExceptionHandler(NoSuchEntityException.class)
     public String notFound(NoSuchEntityException exception) {
         log.error(EXCEPTION, exception);
         return "errors/404_error";
-
     }
 }

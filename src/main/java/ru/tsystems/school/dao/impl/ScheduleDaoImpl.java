@@ -5,6 +5,7 @@ import ru.tsystems.school.dao.AbstractJpaDao;
 import ru.tsystems.school.dao.ScheduleDao;
 import ru.tsystems.school.model.Schedule;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Repository
@@ -48,5 +49,39 @@ public class ScheduleDaoImpl extends AbstractJpaDao<Schedule> implements Schedul
                 .setParameter("stationId", stationId)
                 .setParameter("trainId", trainId)
                 .executeUpdate();
+    }
+
+    @Override
+    public void delayTrain(int trainId, int stationId, int minutesAmount) {
+
+        LocalTime arrivalTime =
+                getEntityManager().createQuery("select sch.arrivalTime from Schedule sch where " +
+                                "sch.train.id =:trainId and sch.station.id=:stationId",
+                        LocalTime.class)
+                        .setParameter("trainId", trainId)
+                        .setParameter("stationId", stationId)
+                        .getSingleResult();
+
+        arrivalTime = arrivalTime.plusMinutes(minutesAmount);
+
+        LocalTime departureTime =
+                getEntityManager().createQuery("select sch.departureTime from Schedule sch where " +
+                                "sch.train.id =:trainId and sch.station.id=:stationId",
+                        LocalTime.class)
+                        .setParameter("trainId", trainId)
+                        .setParameter("stationId", stationId)
+                        .getSingleResult();
+
+        departureTime = departureTime.plusMinutes(minutesAmount);
+
+        getEntityManager().createQuery("update Schedule sch set sch.arrivalTime=:arTime," +
+                " sch.departureTime=:depTime where " +
+                "sch.train.id=:trainId and sch.station.id=:stationId")
+                .setParameter("trainId", trainId)
+                .setParameter("stationId", stationId)
+                .setParameter("arTime", arrivalTime)
+                .setParameter("depTime", departureTime)
+                .executeUpdate();
+
     }
 }

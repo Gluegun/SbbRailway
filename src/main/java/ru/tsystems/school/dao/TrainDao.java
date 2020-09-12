@@ -11,7 +11,7 @@ public interface TrainDao {
     List<Train> findAll();
 
     Train findById(int id);
-    
+
     void save(Train train);
 
     void deleteById(int id);
@@ -23,6 +23,5 @@ public interface TrainDao {
     List<Passenger> findAllPassengers(int id);
 
     List<Train> findByTrainNumber(String number);
-
 
 }

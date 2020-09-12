@@ -34,7 +34,8 @@
 						<td>${tempSchedule.departureTime}</td>
 						<security:authorize access="hasAuthority('ADMIN')">
 							<td>
-								<a href="<c:url value="/trains/${tempSchedule.train.id}/delete/${tempSchedule.station.id}"/>">X</a></td>
+								<a href="<c:url value="/trains/${tempSchedule.train.id}/delete/${tempSchedule.station.id}"/>">X</a>
+							</td>
 						</security:authorize>
 					</tr>
 				</c:forEach>

@@ -13,12 +13,14 @@ public interface ScheduleDao {
     void save(Schedule schedule);
 
     void deleteById(int id);
-    
+
     List<Schedule> findSchedulesByTrainId(int id);
-    
+
     List<Schedule> findSchedulesByStationId(int id);
 
     void deleteTrainFromSchedule(int trainId, int stationId);
-    
+
+    void delayTrain(int trainId, int stationId, int minutesAmount);
+
 
 }

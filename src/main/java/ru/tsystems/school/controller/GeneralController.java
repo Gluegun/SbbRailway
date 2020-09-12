@@ -55,7 +55,8 @@ public class GeneralController {
     public String getSuitableTrainList(@RequestParam String fromStation,
                                        @RequestParam String toStation,
                                        @RequestParam String fromTime,
-                                       @RequestParam String toTime, Model model) {
+                                       @RequestParam String toTime,
+                                       Model model) {
 
         StationDto from = stationService.findByStationName(fromStation);
         StationDto to = stationService.findByStationName(toStation);

@@ -56,7 +56,6 @@ public class TrainDaoImpl extends AbstractJpaDao<Train> implements TrainDao {
                 .setParameter("number", "%" + number + "%")
                 .getResultList();
     }
-
     @Override
     public void deleteById(int id) {
 

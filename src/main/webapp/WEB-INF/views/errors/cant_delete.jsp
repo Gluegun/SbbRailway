@@ -13,7 +13,7 @@
 	<%@include file="../header.jsp" %>
 	<body>
 		<div class="contentContainer mt-3 ml-1">
-			<h4>You cant delete it!</h4>
+			<h4>You cant delete it, ${msg}</h4>
 		</div>
 	</body>
 	<%@include file="../footer.jsp" %>

@@ -2,7 +2,6 @@ package ru.tsystems.school.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.school.dao.TrainDao;
@@ -38,7 +37,6 @@ public class TrainServiceImpl implements TrainService {
     private final TrainMapper trainMapper;
     private final PassengerService passengerService;
     private final StationService stationService;
-    private final JmsTemplate jmsTemplate;
 
     @Override
     public List<TrainDto> findAllDtoTrains() {
@@ -76,7 +74,7 @@ public class TrainServiceImpl implements TrainService {
     public void deleteById(int id) {
 
         Train train = trainDao.findById(id);
-        if (train.getPassengers().isEmpty()) {
+        if (!train.getPassengers().isEmpty()) {
             throw new CantDeleteException("Train is not empty!");
         } else trainDao.deleteById(id);
     }
@@ -90,8 +88,8 @@ public class TrainServiceImpl implements TrainService {
     }
 
     @Override
-    public List<PassengerDto> findAllPassengers(int id) {
-        return trainDao.findAllPassengers(id)
+    public List<PassengerDto> findAllPassengersForTrain(int trainId) {
+        return trainDao.findAllPassengers(trainId)
                 .stream()
                 .map(passengerMapper::toDto)
                 .collect(Collectors.toList());
@@ -132,6 +130,13 @@ public class TrainServiceImpl implements TrainService {
         scheduleDto.setTrain(trainDto);
         scheduleDto.setStation(stationFoundByName);
         stationService.saveSchedule(scheduleDto);
+
+    }
+
+    @Override
+    public int amountOfTicketsSoldForTrain(int trainId) {
+
+        return findAllPassengersForTrain(trainId).size();
 
     }
 

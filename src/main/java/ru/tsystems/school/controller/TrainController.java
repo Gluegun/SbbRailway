@@ -43,14 +43,22 @@ public class TrainController {
     public String getAllTrains(Model model) {
 
         List<TrainDto> trainsDto = trainService.findAllDtoTrains();
+        List<Integer> ticketsSoldForTrain = new ArrayList<>();
+
+        for (TrainDto trainDto : trainsDto) {
+            int amount = trainService.amountOfTicketsSoldForTrain(trainDto.getId());
+            ticketsSoldForTrain.add(amount);
+        }
+
         model.addAttribute("trains", trainsDto);
+        model.addAttribute("ticketsSold", ticketsSoldForTrain);
         return "trainsList";
     }
 
     @GetMapping("/{id}")
     public String findTrainById(@PathVariable int id, Model model) {
 
-        List<PassengerDto> passengersDto = trainService.findAllPassengers(id);
+        List<PassengerDto> passengersDto = trainService.findAllPassengersForTrain(id);
         TrainDto trainDtoById = trainService.findTrainById(id);
         List<ScheduleDto> allSchedulesForTrain = scheduleService.findSchedulesDtoByTrainId(id);
 
@@ -68,7 +76,6 @@ public class TrainController {
         model.addAttribute("trainDto", new TrainDto());
         sessionStatus.setComplete();
         trainService.save(train);
-        jmsTemplate.convertAndSend(train);
 
         return "redirect:/trains";
     }
@@ -81,6 +88,8 @@ public class TrainController {
                              @PathVariable int id) {
 
         trainService.addStationToTrain(departureTime, arrivalTime, station, trainDto, id);
+        jmsTemplate.send(session -> session.createTextMessage("station added"));
+
 
         return "redirect:/trains";
     }
@@ -92,6 +101,17 @@ public class TrainController {
         ticketService.buyTicket(trainId, fromStation);
 
         return "redirect:/";
+    }
+
+    @PostMapping("/delay/")
+    public String delayTrain(
+            @RequestParam int trainId,
+            @RequestParam int stationId,
+            @RequestParam int delayMinutes) {
+
+        scheduleService.delayTrain(trainId, stationId, delayMinutes);
+        return "redirect:/trains";
+
     }
 
 
@@ -115,7 +135,6 @@ public class TrainController {
     @PostMapping("/update")
     public String editTrain(@ModelAttribute("trainDto") TrainDto train, SessionStatus sessionStatus) {
         trainService.update(train);
-        jmsTemplate.convertAndSend(train);
         sessionStatus.setComplete();
         return "redirect:/trains";
     }
@@ -135,7 +154,6 @@ public class TrainController {
 
         scheduleService.deleteTrainFromSchedule(trainId, stationId);
         return "redirect:/trains/{trainId}";
-
     }
 
 
