@@ -2,6 +2,7 @@ package ru.tsystems.school.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.school.dao.TrainDao;
@@ -37,6 +38,7 @@ public class TrainServiceImpl implements TrainService {
     private final TrainMapper trainMapper;
     private final PassengerService passengerService;
     private final StationService stationService;
+    private final JmsTemplate jmsTemplate;
 
     @Override
     public List<TrainDto> findAllDtoTrains() {
@@ -67,6 +69,7 @@ public class TrainServiceImpl implements TrainService {
             }
         }
         trainDao.save(convertTrainToEntity(trainDto));
+        jmsTemplate.send(session -> session.createTextMessage("train created"));
 
     }
 
@@ -77,6 +80,9 @@ public class TrainServiceImpl implements TrainService {
         if (!train.getPassengers().isEmpty()) {
             throw new CantDeleteException("Train is not empty!");
         } else trainDao.deleteById(id);
+
+        jmsTemplate.send(session -> session.createTextMessage("train deleted"));
+
     }
 
     @Override
@@ -106,16 +112,11 @@ public class TrainServiceImpl implements TrainService {
         train.setTrainNumber(trainDto.getTrainNumber());
         trainDao.update(train);
         log.info("now it has: " + train.getTrainNumber());
+        jmsTemplate.send(session -> session.createTextMessage("train updated"));
+
 
     }
 
-    private TrainDto convertTrainToDto(Train train) {
-        return trainMapper.toDto(train);
-    }
-
-    private Train convertTrainToEntity(TrainDto trainDto) {
-        return trainMapper.toEntity(trainDto);
-    }
 
     @Override
     public void addStationToTrain(String departureTime, String arrivalTime,
@@ -130,6 +131,7 @@ public class TrainServiceImpl implements TrainService {
         scheduleDto.setTrain(trainDto);
         scheduleDto.setStation(stationFoundByName);
         stationService.saveSchedule(scheduleDto);
+        jmsTemplate.send(session -> session.createTextMessage("station added to train"));
 
     }
 
@@ -159,5 +161,13 @@ public class TrainServiceImpl implements TrainService {
 
 
         return resultStationDtoForTrain;
+    }
+
+    private TrainDto convertTrainToDto(Train train) {
+        return trainMapper.toDto(train);
+    }
+
+    private Train convertTrainToEntity(TrainDto trainDto) {
+        return trainMapper.toEntity(trainDto);
     }
 }

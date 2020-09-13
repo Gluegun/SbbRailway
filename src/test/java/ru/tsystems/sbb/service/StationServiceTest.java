@@ -57,7 +57,6 @@ public class StationServiceTest {
 
         verify(stationDao, times(1)).findById(eq(0));
         verifyNoInteractions(trainDao);
-        verifyNoInteractions(jmsTemplate);
         verifyNoInteractions(trainMapper);
         verifyNoInteractions(scheduleMapper);
 

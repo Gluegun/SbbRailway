@@ -24,6 +24,8 @@ public class StationController {
 
     private final StationService stationService;
     private final ScheduleService scheduleService;
+    private static final String STATION = "station";
+    private static final String REDIRECT_STATIONS = "redirect:/stations";
 
     @ModelAttribute("stationDto")
     public StationDto stationDto() {
@@ -48,10 +50,10 @@ public class StationController {
 
         StationDto stationDto = stationService.findStationById(id);
         List<ScheduleDto> allSchedulesForStation = stationService.findAllSchedulesForStation(id);
-        model.addAttribute("station", stationDto);
+        model.addAttribute(STATION, stationDto);
         model.addAttribute("schedule", allSchedulesForStation);
 
-        return "station";
+        return STATION;
 
     }
 
@@ -64,7 +66,7 @@ public class StationController {
         sessionStatus.setComplete();
         stationService.save(stationDto);
 
-        return "redirect:/stations";
+        return REDIRECT_STATIONS;
     }
 
     @GetMapping("/{id}/addTrain")
@@ -74,7 +76,7 @@ public class StationController {
                            @PathVariable int id) {
 
         stationService.addTrainToStation(departureTime, arrivalTime, train, stationDto, id);
-        return "redirect:/stations";
+        return REDIRECT_STATIONS;
     }
 
     @GetMapping("/add")
@@ -89,7 +91,7 @@ public class StationController {
         List<TrainDto> resultTrainsForStation = stationService.potentialTrainsForStation(id);
         List<ScheduleDto> allSchedulesForStation = stationService.findAllSchedulesForStation(id);
 
-        model.addAttribute("station", stationDtoById);
+        model.addAttribute(STATION, stationDtoById);
         model.addAttribute("allTrains", resultTrainsForStation);
         model.addAttribute("schedule", allSchedulesForStation);
         model.addAttribute("id", id);
@@ -101,14 +103,14 @@ public class StationController {
 
         stationService.update(station);
         sessionStatus.setComplete();
-        return "redirect:/stations";
+        return REDIRECT_STATIONS;
     }
 
 
     @GetMapping("deleteStation/{id}")
     public String deleteStation(@PathVariable int id) {
         stationService.deleteStationById(id);
-        return "redirect:/stations";
+        return REDIRECT_STATIONS;
     }
 
     @GetMapping("/{stationId}/delete/{trainId}")
@@ -116,7 +118,7 @@ public class StationController {
                                                  @PathVariable int trainId) {
 
         scheduleService.deleteTrainFromSchedule(trainId, stationId);
-        return "redirect:/stations/{stationId}";
+        return REDIRECT_STATIONS + "/{stationId}";
 
     }
 

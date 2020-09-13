@@ -11,9 +11,7 @@ import ru.tsystems.school.model.Train;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Repository
@@ -77,50 +75,36 @@ public class StationDaoImpl extends AbstractJpaDao<Station> implements StationDa
     }
 
     @Override
-    public void addSchedule(int stationId, int trainId, LocalTime arrivalTime) {
+    public void addSchedule(int stationId, int trainId, LocalTime arrivalTime, LocalTime departureTime) {
 
-        try {
+        Station stationFromDb = findById(stationId);
+        Train trainFromDb = trainDao.findById(trainId);
+        Schedule schedule = new Schedule(trainFromDb, arrivalTime, departureTime, stationFromDb);
+        scheduleDao.save(schedule);
 
-            Station stationFromDb = findById(stationId);
-            if (stationFromDb == null) {
-                return;
-            }
-
-            Train trainFromDb = trainDao.findById(trainId);
-            if (trainFromDb == null) {
-                return;
-            }
-
-            Schedule schedule = new Schedule(trainFromDb, arrivalTime, stationFromDb);
-
-            scheduleDao.save(schedule);
-
-        } catch (Exception ex) {
-
-        }
     }
 
     @Override
     public List<Train> findSuitableTrains(Station from, Station to, String fromTime, String toTime) {
 
-
-        List resultList = getEntityManager().createNativeQuery(
-                "select train_id from schedule where schedule.station_id = :from or " +
-                        "schedule.station_id =:to and schedule.departure_time between " +
-                        ":fromTime and :toTime")
-                .setParameter("from", from.getId())
-                .setParameter("to", to.getId())
+        List resultList = getEntityManager().createNativeQuery("select train_id from schedule where " +
+                "station_id =:fromId and departure_time <= :fromTime " +
+                "union select train_id from schedule where station_id = :toId and arrival_time <= :toTime")
+                .setParameter("fromId", from.getId())
                 .setParameter("fromTime", fromTime)
+                .setParameter("toId", to.getId())
                 .setParameter("toTime", toTime)
                 .getResultList();
 
-        Set<Train> trainsSet = new HashSet<>();
+        List<Train> trains = new ArrayList<>();
 
         for (Object o : resultList) {
-            trainsSet.add(trainDao.findById((Integer) o));
+
+            Train byId = trainDao.findById((Integer) o);
+            trains.add(byId);
         }
 
-        return new ArrayList<>(trainsSet);
+        return trains;
 
     }
 

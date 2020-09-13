@@ -27,8 +27,9 @@ public class Schedule extends AbstractPo implements Serializable {
     @JoinColumn(name = "station_id", nullable = false)
     private Station station;
 
-    public Schedule(Train train, LocalTime departureTime, Station station) {
+    public Schedule(Train train, LocalTime arrivalTime, LocalTime departureTime, Station station) {
         this.train = train;
+        this.arrivalTime = arrivalTime;
         this.departureTime = departureTime;
         this.station = station;
     }

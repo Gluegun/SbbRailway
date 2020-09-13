@@ -15,6 +15,9 @@ public class ScheduleDaoImpl extends AbstractJpaDao<Schedule> implements Schedul
         setClazz(Schedule.class);
     }
 
+    private static final String STATION_ID = "stationId";
+    private static final String TRAIN_ID = "trainId";
+
     @Override
     public List<Schedule> findAll() {
 
@@ -46,8 +49,8 @@ public class ScheduleDaoImpl extends AbstractJpaDao<Schedule> implements Schedul
 
         getEntityManager().createNativeQuery("delete from railway.schedule where station_id =:stationId" +
                 " and train_id =:trainId")
-                .setParameter("stationId", stationId)
-                .setParameter("trainId", trainId)
+                .setParameter(STATION_ID, stationId)
+                .setParameter(TRAIN_ID, trainId)
                 .executeUpdate();
     }
 
@@ -58,8 +61,8 @@ public class ScheduleDaoImpl extends AbstractJpaDao<Schedule> implements Schedul
                 getEntityManager().createQuery("select sch.arrivalTime from Schedule sch where " +
                                 "sch.train.id =:trainId and sch.station.id=:stationId",
                         LocalTime.class)
-                        .setParameter("trainId", trainId)
-                        .setParameter("stationId", stationId)
+                        .setParameter(TRAIN_ID, trainId)
+                        .setParameter(STATION_ID, stationId)
                         .getSingleResult();
 
         arrivalTime = arrivalTime.plusMinutes(minutesAmount);
@@ -68,8 +71,8 @@ public class ScheduleDaoImpl extends AbstractJpaDao<Schedule> implements Schedul
                 getEntityManager().createQuery("select sch.departureTime from Schedule sch where " +
                                 "sch.train.id =:trainId and sch.station.id=:stationId",
                         LocalTime.class)
-                        .setParameter("trainId", trainId)
-                        .setParameter("stationId", stationId)
+                        .setParameter(TRAIN_ID, trainId)
+                        .setParameter(STATION_ID, stationId)
                         .getSingleResult();
 
         departureTime = departureTime.plusMinutes(minutesAmount);
@@ -77,8 +80,8 @@ public class ScheduleDaoImpl extends AbstractJpaDao<Schedule> implements Schedul
         getEntityManager().createQuery("update Schedule sch set sch.arrivalTime=:arTime," +
                 " sch.departureTime=:depTime where " +
                 "sch.train.id=:trainId and sch.station.id=:stationId")
-                .setParameter("trainId", trainId)
-                .setParameter("stationId", stationId)
+                .setParameter(TRAIN_ID, trainId)
+                .setParameter(STATION_ID, stationId)
                 .setParameter("arTime", arrivalTime)
                 .setParameter("depTime", departureTime)
                 .executeUpdate();

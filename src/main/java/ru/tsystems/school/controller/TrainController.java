@@ -28,6 +28,8 @@ public class TrainController {
     private final TicketService ticketService;
     private final ScheduleService scheduleService;
     private final JmsTemplate jmsTemplate;
+    private static final String TRAIN = "train";
+    private static final String REDIRECT_TRAINS = "redirect:/trains";
 
     @ModelAttribute("trainDto")
     public TrainDto getTrainDto() {
@@ -62,11 +64,11 @@ public class TrainController {
         TrainDto trainDtoById = trainService.findTrainById(id);
         List<ScheduleDto> allSchedulesForTrain = scheduleService.findSchedulesDtoByTrainId(id);
 
-        model.addAttribute("train", trainDtoById);
+        model.addAttribute(TRAIN, trainDtoById);
         model.addAttribute("passengers", passengersDto);
         model.addAttribute("schedules", allSchedulesForTrain);
 
-        return "train";
+        return TRAIN;
     }
 
     @PostMapping("/add")
@@ -77,7 +79,7 @@ public class TrainController {
         sessionStatus.setComplete();
         trainService.save(train);
 
-        return "redirect:/trains";
+        return REDIRECT_TRAINS;
     }
 
     @GetMapping("/{id}/addStation")
@@ -91,7 +93,7 @@ public class TrainController {
         jmsTemplate.send(session -> session.createTextMessage("station added"));
 
 
-        return "redirect:/trains";
+        return REDIRECT_TRAINS;
     }
 
     @GetMapping("/buy/{trainId}")
@@ -103,14 +105,14 @@ public class TrainController {
         return "redirect:/";
     }
 
-    @PostMapping("/delay/")
+    @GetMapping("{trainId}/delay/{stationId}")
     public String delayTrain(
-            @RequestParam int trainId,
-            @RequestParam int stationId,
+            @PathVariable int trainId,
+            @PathVariable int stationId,
             @RequestParam int delayMinutes) {
 
         scheduleService.delayTrain(trainId, stationId, delayMinutes);
-        return "redirect:/trains";
+        return REDIRECT_TRAINS;
 
     }
 
@@ -126,7 +128,7 @@ public class TrainController {
         TrainDto trainDtoById = trainService.findTrainById(id);
         List<StationDto> resultStationDtoForTrain = trainService.potentialStationsForTrain(id);
 
-        model.addAttribute("train", trainDtoById);
+        model.addAttribute(TRAIN, trainDtoById);
         model.addAttribute("allStations", resultStationDtoForTrain);
         model.addAttribute("id", id);
         return "editTrain";
@@ -136,15 +138,15 @@ public class TrainController {
     public String editTrain(@ModelAttribute("trainDto") TrainDto train, SessionStatus sessionStatus) {
         trainService.update(train);
         sessionStatus.setComplete();
-        return "redirect:/trains";
+        return REDIRECT_TRAINS;
     }
 
     @GetMapping("delete/{id}")
     public String deleteTrain(@PathVariable int id) {
 
-        TrainDto trainDto = trainService.findTrainById(id);
         trainService.deleteById(id);
-        return "redirect:/trains";
+        return REDIRECT_TRAINS;
+
     }
 
     @GetMapping("{trainId}/delete/{stationId}")

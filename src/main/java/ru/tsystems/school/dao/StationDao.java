@@ -29,7 +29,7 @@ public interface StationDao {
 
     Station findByStationName(String name);
 
-    void addSchedule(int stationId, int trainId, LocalTime arrivalTime);
+    void addSchedule(int stationId, int trainId, LocalTime arrivalTime, LocalTime departureTime);
 
     void saveSchedule(Schedule schedule);
 

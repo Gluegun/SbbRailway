@@ -25,7 +25,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public List<ScheduleDto> findAll() {
-        return scheduleDao.findAll().stream().map(scheduleMapper::toDto).collect(Collectors.toList());
+        return scheduleDao.findAll().stream().map(scheduleMapper::toDto).sorted().collect(Collectors.toList());
     }
 
     @Override
@@ -34,23 +34,25 @@ public class ScheduleServiceImpl implements ScheduleService {
         return scheduleDao.findSchedulesByTrainId(id)
                 .stream()
                 .map(scheduleMapper::toDto)
+                .sorted()
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<ScheduleDtoRest> findScheduleByStationId(int stationId) {
-        List<Schedule> schedulesByStationId = scheduleDao.findSchedulesByStationId(stationId);
-        List<ScheduleDto> collect = schedulesByStationId.stream()
-                .map(scheduleMapper::toDto)
-                .collect(Collectors.toList());
 
-        return collect.stream().map(ScheduleDtoRest::new).collect(Collectors.toList());
+        List<Schedule> schedulesByStationId = scheduleDao.findSchedulesByStationId(stationId);
+        List<ScheduleDto> schedules = schedulesByStationId.stream()
+                .map(scheduleMapper::toDto).sorted().collect(Collectors.toList());
+
+        return schedules.stream().map(ScheduleDtoRest::new).collect(Collectors.toList());
 
     }
 
     @Override
     public void deleteById(int id) {
         scheduleDao.deleteById(id);
+        jmsTemplate.send(session -> session.createTextMessage("schedule deleted"));
     }
 
     @Override
@@ -65,6 +67,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     public void delayTrain(int trainId, int stationId, int minutesAmount) {
 
         scheduleDao.delayTrain(trainId, stationId, minutesAmount);
+        jmsTemplate.send(session -> session.createTextMessage("train delayed"));
 
     }
 }

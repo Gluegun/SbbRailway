@@ -22,7 +22,8 @@
 							<td>
 								<form:hidden path="id" value="${id}"/>
 								<form:label path="name">Station name</form:label></td>
-							<td><form:input onfocus="this.value=''" path="name"/></td>
+							<td><form:input onfocus="this.value=''" path="name" placeholder="${station.name}"
+							                value="${station.name}"/></td>
 						</tr>
 						<tr>
 							<td>

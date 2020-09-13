@@ -23,11 +23,13 @@
 							<td>
 								<form:hidden path="id" value="${id}"/>
 								<form:label path="trainNumber">Train number</form:label></td>
-							<td><form:input path="trainNumber"/></td>
+							<td><form:input onfocus="this.value=''" path="trainNumber"
+							                placeholder="${train.trainNumber}" value="${train.trainNumber}"/></td>
 						</tr>
 						<tr>
 							<td><form:label path="seatsAmount">Seats amount</form:label></td>
-							<td><form:input path="seatsAmount"/></td>
+							<td><form:input onfocus="this.value=''" path="seatsAmount"
+							                placeholder="${train.seatsAmount}" value="${train.seatsAmount}"/></td>
 						</tr>
 						<tr>
 							<td>

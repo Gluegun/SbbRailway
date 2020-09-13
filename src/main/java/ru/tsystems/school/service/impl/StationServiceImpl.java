@@ -54,7 +54,7 @@ public class StationServiceImpl implements StationService {
             }
         }
         stationDao.save(stationMapper.toEntity(stationDto));
-        jmsTemplate.send(session -> session.createTextMessage("station " + stationDto.getName() + " created"));
+        jmsTemplate.send(session -> session.createTextMessage("station created"));
     }
 
     @Override
@@ -62,7 +62,7 @@ public class StationServiceImpl implements StationService {
 
         StationDto stationById = findStationById(id);
         stationDao.deleteById(id);
-        jmsTemplate.send(session -> session.createTextMessage("station " + stationById.getName() + " was deleted"));
+        jmsTemplate.send(session -> session.createTextMessage("station was deleted"));
 
     }
 
@@ -94,11 +94,9 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public void saveSchedule(ScheduleDto schedule) {
-        stationDao.saveSchedule(scheduleMapper.toEntity(schedule));
 
-        jmsTemplate.send(session -> session.createTextMessage("schedule added: " +
-                schedule.getTrain().getTrainNumber() + " departs from " +
-                schedule.getStation().getName() + " station at " + schedule.getDepartureTime()));
+        stationDao.saveSchedule(scheduleMapper.toEntity(schedule));
+        jmsTemplate.send(session -> session.createTextMessage("schedule added"));
 
     }
 
@@ -107,11 +105,16 @@ public class StationServiceImpl implements StationService {
         return stationDao.findScheduleForStation(id)
                 .stream()
                 .map(scheduleMapper::toDto)
+                .sorted()
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<TrainDto> findSuitableTrains(StationDto from, StationDto to, String fromTime, String toTime) {
+
+        if (from.getName().equals(to.getName())) {
+            throw new RuntimeException("You have to choose different stations");
+        }
 
         Station stationFromEntity = stationMapper.toEntity(from);
         Station stationToEntity = stationMapper.toEntity(to);
@@ -130,7 +133,7 @@ public class StationServiceImpl implements StationService {
         station.setName(stationDto.getName());
         stationDao.update(station);
         log.info("now it has: " + station.getName());
-        jmsTemplate.send(session -> session.createTextMessage("station updated: " + stationDto.getName()));
+        jmsTemplate.send(session -> session.createTextMessage("station updated"));
 
     }
 
@@ -140,6 +143,7 @@ public class StationServiceImpl implements StationService {
         Station byId = stationDao.findById(id);
         byId.setName(stationDto.getName());
         stationDao.update(id, stationMapper.toEntity(stationDto));
+        jmsTemplate.send(session -> session.createTextMessage("station updated"));
 
     }
 
@@ -154,6 +158,7 @@ public class StationServiceImpl implements StationService {
         return stationDao.findScheduleForStationAndTrain(stationId, trainId)
                 .stream()
                 .map(scheduleMapper::toDto)
+                .sorted()
                 .collect(Collectors.toList());
     }
 
