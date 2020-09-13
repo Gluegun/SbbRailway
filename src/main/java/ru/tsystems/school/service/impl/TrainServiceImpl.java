@@ -73,6 +73,7 @@ public class TrainServiceImpl implements TrainService {
             }
         }
         trainDao.save(convertTrainToEntity(trainDto));
+        log.info("train" + trainDto.getTrainNumber() + " was created");
         jmsTemplate.send(session -> session.createTextMessage("train created"));
 
     }
@@ -84,7 +85,7 @@ public class TrainServiceImpl implements TrainService {
         if (!train.getPassengers().isEmpty()) {
             throw new CantDeleteException("Train is not empty!");
         } else trainDao.deleteById(id);
-
+        log.info("train " + train.getTrainNumber() + " was deleted");
         jmsTemplate.send(session -> session.createTextMessage("train deleted"));
 
     }
@@ -108,14 +109,11 @@ public class TrainServiceImpl implements TrainService {
     @Override
     public void update(TrainDto trainDto) {
 
-        PassengerDto authorizedPassenger = passengerService.getAuthorizedPassenger();
-        log.info("user " + authorizedPassenger.getUsername() + " changed train:\n " +
-                "train has: " + trainDto.getTrainNumber() + " number before");
         Train train = trainDao.findById(trainDto.getId());
         train.setSeatsAmount(trainDto.getSeatsAmount());
         train.setTrainNumber(trainDto.getTrainNumber());
         trainDao.update(train);
-        log.info("now it has: " + train.getTrainNumber());
+        log.info("train " + train.getTrainNumber() + " was updated to " + train.getTrainNumber());
         jmsTemplate.send(session -> session.createTextMessage("train updated"));
 
 
@@ -124,17 +122,21 @@ public class TrainServiceImpl implements TrainService {
 
     @Override
     public void addStationToTrain(String departureTime, String arrivalTime,
-                                  String station, TrainDto trainDto, int id) {
+                                  String station, TrainDto trainDto, int trainId) {
 
+
+        TrainDto train = findTrainById(trainId);
         StationDto stationFoundByName = stationService.findByStationName(station);
         ScheduleDto scheduleDto = new ScheduleDto();
         LocalTime departureTimeLocalTime = LocalTime.parse(departureTime);
         LocalTime arrivalTimeLocalTime = LocalTime.parse(arrivalTime);
         scheduleDto.setDepartureTime(departureTimeLocalTime);
         scheduleDto.setArrivalTime(arrivalTimeLocalTime);
-        scheduleDto.setTrain(trainDto);
+        scheduleDto.setTrain(train);
         scheduleDto.setStation(stationFoundByName);
         stationService.saveSchedule(scheduleDto);
+        log.info("station " + stationFoundByName.getName() + " was added to train "
+                + train.getTrainNumber() + " route");
         jmsTemplate.send(session -> session.createTextMessage("station added to train"));
 
     }

@@ -1,5 +1,8 @@
 package ru.tsystems.school.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,6 +15,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "passengers")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Passenger extends AbstractPo implements Serializable, UserDetails {
 
     @Column(name = "first_name", nullable = false)
@@ -24,32 +30,29 @@ public class Passenger extends AbstractPo implements Serializable, UserDetails {
     private LocalDate birthDate;
 
     @Column(name = "username", nullable = false, unique = true)
-    private String userName;
+    private String usrName;
 
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column (name = "active")
+    @Column(name = "active")
     private boolean active;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "passenger_id"))
     @Enumerated(EnumType.STRING)
-    private Set<Role> roles= new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
-    @OneToMany (mappedBy = "passenger", /*cascade = CascadeType.ALL,*/fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "passenger", fetch = FetchType.EAGER)
     private Set<Ticket> tickets;
 
-    public Passenger() {
-
-    }
 
     public Passenger(String firstName, String lastName, LocalDate birthDate
-            , String userName, String password, Boolean active) {
+            , String usrName, String password, Boolean active) {
         this.setFirstName(firstName);
         this.setLastName(lastName);
         this.setBirthDate(birthDate);
-        this.userName = userName;
+        this.usrName = usrName;
         this.password = password;
         this.setActive(active);
     }
@@ -58,9 +61,9 @@ public class Passenger extends AbstractPo implements Serializable, UserDetails {
         return getRoles();
     }
 
-   @Override
+    @Override
     public String getUsername() {
-        return userName;
+        return usrName;
     }
 
     public boolean isEnabled() {
@@ -77,69 +80,5 @@ public class Passenger extends AbstractPo implements Serializable, UserDetails {
 
     public boolean isAccountNonLocked() {
         return true;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public Set<Ticket> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(Set<Ticket> tickets) {
-        this.tickets = tickets;
     }
 }

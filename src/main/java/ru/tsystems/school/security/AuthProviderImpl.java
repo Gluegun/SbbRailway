@@ -1,5 +1,6 @@
 package ru.tsystems.school.security;
 
+import lombok.extern.log4j.Log4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Component
 @Transactional
+@Log4j
 public class AuthProviderImpl implements AuthenticationProvider {
 
     @Override
@@ -44,6 +46,8 @@ public class AuthProviderImpl implements AuthenticationProvider {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
         authorities.add(new SimpleGrantedAuthority(passenger.getRoles().iterator().next().toString()));
+
+        log.info("logged in as " + userName);
 
         return new UsernamePasswordAuthenticationToken(passenger, null, authorities);
 

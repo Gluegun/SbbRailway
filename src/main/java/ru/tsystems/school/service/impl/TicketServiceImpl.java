@@ -1,6 +1,7 @@
 package ru.tsystems.school.service.impl;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @AllArgsConstructor
+@Log4j
 public class TicketServiceImpl implements TicketService {
 
     private final TicketDao ticketDao;
@@ -49,6 +51,8 @@ public class TicketServiceImpl implements TicketService {
     public void save(TicketDto ticketDto) {
 
         Ticket ticket = ticketMapper.toEntity(ticketDto);
+        log.info("ticket was bought by " + ticket.getPassenger().getUsername() + " for train " +
+                ticket.getTrain().getTrainNumber());
         ticketDao.saveTicket(ticket);
     }
 
@@ -74,7 +78,10 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public void deleteById(int id) {
 
+        Ticket byId = ticketDao.findById(id);
         ticketDao.deleteById(id);
+        log.info("ticket of passenger " + byId.getPassenger().getUsername() + " was canceled/deleted for " +
+                byId.getTrain().getTrainNumber());
     }
 
     @Override
@@ -93,12 +100,8 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public StationDto getStationDeparture(int trainId, LocalTime departureTime) {
 
-
-        StationDto stationDto = stationMapper
+        return stationMapper
                 .toDto(ticketDao.findStationFromByTrainIdAndDepartureTime(trainId, departureTime));
-
-
-        return stationDto;
 
     }
 

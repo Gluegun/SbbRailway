@@ -1,6 +1,5 @@
 package ru.tsystems.school.service.impl;
 
-import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.jms.core.JmsTemplate;
@@ -53,6 +52,7 @@ public class StationServiceImpl implements StationService {
                 }
             }
         }
+        log.info("Station " + stationDto.getName() + " created");
         stationDao.save(stationMapper.toEntity(stationDto));
         jmsTemplate.send(session -> session.createTextMessage("station created"));
     }
@@ -60,8 +60,9 @@ public class StationServiceImpl implements StationService {
     @Override
     public void deleteStationById(int id) {
 
-        StationDto stationById = findStationById(id);
+        Station byId = stationDao.findById(id);
         stationDao.deleteById(id);
+        log.info("Station " + byId.getName() + " was deleted");
         jmsTemplate.send(session -> session.createTextMessage("station was deleted"));
 
     }
@@ -96,6 +97,7 @@ public class StationServiceImpl implements StationService {
     public void saveSchedule(ScheduleDto schedule) {
 
         stationDao.saveSchedule(scheduleMapper.toEntity(schedule));
+        log.info("schedule for " + schedule.getStation().getName() + " station was created");
         jmsTemplate.send(session -> session.createTextMessage("schedule added"));
 
     }
@@ -128,11 +130,10 @@ public class StationServiceImpl implements StationService {
     @Override
     public void update(StationDto stationDto) {
 
-        log.info("station has: " + stationDto.getName() + " name before");
         Station station = stationDao.findById(stationDto.getId());
         station.setName(stationDto.getName());
         stationDao.update(station);
-        log.info("now it has: " + station.getName());
+        log.info("station: " + station.getName() + " was updated");
         jmsTemplate.send(session -> session.createTextMessage("station updated"));
 
     }
@@ -143,6 +144,7 @@ public class StationServiceImpl implements StationService {
         Station byId = stationDao.findById(id);
         byId.setName(stationDto.getName());
         stationDao.update(id, stationMapper.toEntity(stationDto));
+        log.info("station: " + stationDto.getName() + " was updated");
         jmsTemplate.send(session -> session.createTextMessage("station updated"));
 
     }
@@ -206,8 +208,7 @@ public class StationServiceImpl implements StationService {
         scheduleDto.setStation(station);
         saveSchedule(scheduleDto);
 
-        Gson gson = new Gson();
-        String jsonSchedule = gson.toJson(scheduleDto);
-        jmsTemplate.send(session -> session.createTextMessage(jsonSchedule));
+        log.info("train " + trainDto.getTrainNumber() + " was added to " + station.getName() + " station");
+        jmsTemplate.send(session -> session.createTextMessage("train was added to the station"));
     }
 }

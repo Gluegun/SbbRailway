@@ -1,10 +1,13 @@
 package ru.tsystems.school.service.impl;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.school.dao.ScheduleDao;
+import ru.tsystems.school.dao.StationDao;
+import ru.tsystems.school.dao.TrainDao;
 import ru.tsystems.school.dto.ScheduleDto;
 import ru.tsystems.school.dto.ScheduleDtoRest;
 import ru.tsystems.school.mapper.ScheduleMapper;
@@ -17,11 +20,14 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @AllArgsConstructor
+@Log4j
 public class ScheduleServiceImpl implements ScheduleService {
 
     private final ScheduleDao scheduleDao;
     private final ScheduleMapper scheduleMapper;
     private final JmsTemplate jmsTemplate;
+    private final TrainDao trainDao;
+    private final StationDao stationDao;
 
     @Override
     public List<ScheduleDto> findAll() {
@@ -51,7 +57,9 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public void deleteById(int id) {
+        Schedule byId = scheduleDao.findById(id);
         scheduleDao.deleteById(id);
+        log.info("Schedule for " + byId.getStation().getName() + " was deleted");
         jmsTemplate.send(session -> session.createTextMessage("schedule deleted"));
     }
 
@@ -60,14 +68,6 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         scheduleDao.deleteTrainFromSchedule(stationId, trainId);
         jmsTemplate.send(session -> session.createTextMessage("schedule was deleted"));
-
-    }
-
-    @Override
-    public void delayTrain(int trainId, int stationId, int minutesAmount) {
-
-        scheduleDao.delayTrain(trainId, stationId, minutesAmount);
-        jmsTemplate.send(session -> session.createTextMessage("train delayed"));
 
     }
 }

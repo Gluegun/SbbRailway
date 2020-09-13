@@ -17,6 +17,5 @@ public interface ScheduleService {
 
     void deleteTrainFromSchedule(int trainId, int stationId);
 
-    void delayTrain(int trainId, int stationId, int minutesAmount);
 
 }

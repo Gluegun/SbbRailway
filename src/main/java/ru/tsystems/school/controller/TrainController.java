@@ -145,18 +145,6 @@ public class TrainController {
         scheduleService.deleteTrainFromSchedule(trainId, stationId);
         return "redirect:/trains/{trainId}";
     }
-
-    @GetMapping("/{trainId}/delay/{stationId}")
-    public String delayTrain(
-            @PathVariable int trainId,
-            @PathVariable int stationId,
-            @RequestParam int delayedMinutes) {
-
-        scheduleService.delayTrain(trainId, stationId, delayedMinutes);
-        return "redirect:/trains/{trainId}";
-    }
-
-
 }
 
 

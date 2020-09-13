@@ -23,7 +23,7 @@ public class PassengerDaoImpl extends AbstractJpaDao<Passenger> implements Passe
 
         try {
             passenger = getEntityManager()
-                    .createQuery("select p from Passenger p  where p.userName=:userName",
+                    .createQuery("select p from Passenger p  where p.usrName=:userName",
                             Passenger.class)
                     .setParameter("userName", userName)
                     .getSingleResult();

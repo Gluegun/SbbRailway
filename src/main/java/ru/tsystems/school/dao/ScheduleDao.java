@@ -20,7 +20,4 @@ public interface ScheduleDao {
 
     void deleteTrainFromSchedule(int trainId, int stationId);
 
-    void delayTrain(int trainId, int stationId, int minutesAmount);
-
-
 }

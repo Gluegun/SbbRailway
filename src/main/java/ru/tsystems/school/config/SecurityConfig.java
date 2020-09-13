@@ -2,7 +2,6 @@ package ru.tsystems.school.config;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -10,8 +9,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.tsystems.school.security.AuthProviderImpl;
 
 @Configuration
@@ -23,12 +20,6 @@ import ru.tsystems.school.security.AuthProviderImpl;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AuthProviderImpl authProvider = new AuthProviderImpl();
-
-    @Bean
-    public PasswordEncoder getPasswordEncoder() {
-        return new BCryptPasswordEncoder(8);
-    }
-
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {

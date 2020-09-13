@@ -29,6 +29,5 @@ public class PassengerController {
     @PostMapping
     public void savePassenger(@ModelAttribute("passengerDto") PassengerDto passengerDto) {
         passengerService.save(passengerDto);
-
     }
 }
