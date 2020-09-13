@@ -17,7 +17,6 @@ import ru.tsystems.school.mapper.PassengerMapper;
 import ru.tsystems.school.mapper.StationMapper;
 import ru.tsystems.school.mapper.TrainMapper;
 import ru.tsystems.school.model.Train;
-import ru.tsystems.school.service.PassengerService;
 import ru.tsystems.school.service.StationService;
 import ru.tsystems.school.service.TrainService;
 
@@ -36,7 +35,6 @@ public class TrainServiceImpl implements TrainService {
     private final PassengerMapper passengerMapper;
     private final StationMapper stationMapper;
     private final TrainMapper trainMapper;
-    private final PassengerService passengerService;
     private final StationService stationService;
     private final JmsTemplate jmsTemplate;
 
@@ -45,7 +43,7 @@ public class TrainServiceImpl implements TrainService {
 
         return trainDao.findAll()
                 .stream()
-                .map(this::convertTrainToDto)
+                .map(trainMapper::toDto)
                 .collect(Collectors.toList());
     }
 
@@ -72,7 +70,7 @@ public class TrainServiceImpl implements TrainService {
                 throw new NotUniqueNameException("Train has already exists");
             }
         }
-        trainDao.save(convertTrainToEntity(trainDto));
+        trainDao.save(trainMapper.toEntity(trainDto));
         log.info("train" + trainDto.getTrainNumber() + " was created");
         jmsTemplate.send(session -> session.createTextMessage("train created"));
 
@@ -116,7 +114,6 @@ public class TrainServiceImpl implements TrainService {
         log.info("train " + train.getTrainNumber() + " was updated to " + train.getTrainNumber());
         jmsTemplate.send(session -> session.createTextMessage("train updated"));
 
-
     }
 
 
@@ -142,13 +139,6 @@ public class TrainServiceImpl implements TrainService {
     }
 
     @Override
-    public int amountOfTicketsSoldForTrain(int trainId) {
-
-        return findAllPassengersForTrain(trainId).size();
-
-    }
-
-    @Override
     public List<StationDto> potentialStationsForTrain(int trainId) {
 
         List<StationDto> allStations = stationService.findAllStations();
@@ -156,24 +146,18 @@ public class TrainServiceImpl implements TrainService {
         List<StationDto> resultStationDtoForTrain = new ArrayList<>();
 
         for (StationDto stationDto : allStations) {
-            boolean temp1 = false;
+            boolean temp = false;
             for (StationDto stationForTrain : allStationsForTrain) {
-                if (stationDto.getId() == stationForTrain.getId())
-                    temp1 = true;
+                if (stationDto.getId() == stationForTrain.getId()) {
+                    temp = true;
+                    break;
+                }
             }
-            if (!temp1)
+            if (!temp)
                 resultStationDtoForTrain.add(stationDto);
         }
 
 
         return resultStationDtoForTrain;
-    }
-
-    private TrainDto convertTrainToDto(Train train) {
-        return trainMapper.toDto(train);
-    }
-
-    private Train convertTrainToEntity(TrainDto trainDto) {
-        return trainMapper.toEntity(trainDto);
     }
 }

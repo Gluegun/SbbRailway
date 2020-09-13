@@ -25,9 +25,4 @@ public class PassengerController {
         return "passenger";
     }
 
-
-    @PostMapping
-    public void savePassenger(@ModelAttribute("passengerDto") PassengerDto passengerDto) {
-        passengerService.save(passengerDto);
-    }
 }

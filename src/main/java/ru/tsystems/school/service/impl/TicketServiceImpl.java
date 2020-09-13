@@ -37,10 +37,6 @@ public class TicketServiceImpl implements TicketService {
     private final StationService stationService;
     private final StationMapper stationMapper;
 
-    @Override
-    public List<TicketDto> findAll() {
-        return ticketDao.findAll().stream().map(ticketMapper::toDto).collect(Collectors.toList());
-    }
 
     @Override
     public TicketDto findById(int id) {
@@ -163,6 +159,10 @@ public class TicketServiceImpl implements TicketService {
             id += ticket.getId();
         }
         return id;
+    }
+
+    private List<TicketDto> findAll() {
+        return ticketDao.findAll().stream().map(ticketMapper::toDto).collect(Collectors.toList());
     }
 
     @Override

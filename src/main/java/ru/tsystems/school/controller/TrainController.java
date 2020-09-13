@@ -45,15 +45,8 @@ public class TrainController {
     public String getAllTrains(Model model) {
 
         List<TrainDto> trainsDto = trainService.findAllDtoTrains();
-        List<Integer> ticketsSoldForTrain = new ArrayList<>();
-
-        for (TrainDto trainDto : trainsDto) {
-            int amount = trainService.amountOfTicketsSoldForTrain(trainDto.getId());
-            ticketsSoldForTrain.add(amount);
-        }
 
         model.addAttribute("trains", trainsDto);
-        model.addAttribute("ticketsSold", ticketsSoldForTrain);
         return "trainsList";
     }
 

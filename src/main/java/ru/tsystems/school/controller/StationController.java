@@ -113,7 +113,7 @@ public class StationController {
         return REDIRECT_STATIONS;
     }
 
-    @GetMapping("/{stationId}/delete/{trainId}")
+    @GetMapping("/{trainId}/delete/{stationId}")
     public String deleteTrainFromStationSchedule(@PathVariable int stationId,
                                                  @PathVariable int trainId) {
 

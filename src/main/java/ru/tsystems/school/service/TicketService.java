@@ -9,8 +9,6 @@ import java.util.Map;
 
 public interface TicketService {
 
-    List<TicketDto> findAll();
-
     TicketDto findById(int id);
 
     void save(TicketDto ticketDto);

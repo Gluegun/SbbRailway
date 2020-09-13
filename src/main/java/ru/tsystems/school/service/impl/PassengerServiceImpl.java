@@ -13,9 +13,6 @@ import ru.tsystems.school.mapper.PassengerMapper;
 import ru.tsystems.school.model.Passenger;
 import ru.tsystems.school.service.PassengerService;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 @Transactional
 @AllArgsConstructor
@@ -29,31 +26,6 @@ public class PassengerServiceImpl implements PassengerService {
     @Override
     public PassengerDto findById(int id) {
         return passengerMapper.toDto(passengerDao.findById(id));
-    }
-
-
-    @Override
-    public void delete(int id) {
-        passengerDao.deleteById(id);
-    }
-
-    @Override
-    public List<PassengerDto> findAllDtoPassengers() {
-        return passengerDao.findAll().stream().map(this::convertPassengerToDto).collect(Collectors.toList());
-    }
-
-    @Override
-    public void save(PassengerDto passengerDto) {
-
-        Passenger passenger = convertPassengerToEntity(passengerDto);
-        passengerDao.save(passenger);
-
-    }
-
-    @Override
-    public void createUser(PassengerDto passengerDto) {
-        Passenger passenger = passengerMapper.toEntity(passengerDto);
-        passengerDao.save(passenger);
     }
 
     @Override

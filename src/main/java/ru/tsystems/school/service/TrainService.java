@@ -26,6 +26,5 @@ public interface TrainService {
 
     List<StationDto> potentialStationsForTrain(int trainId);
 
-    int amountOfTicketsSoldForTrain(int trainId);
 
 }

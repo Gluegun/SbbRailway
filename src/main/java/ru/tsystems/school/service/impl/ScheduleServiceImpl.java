@@ -6,12 +6,13 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.school.dao.ScheduleDao;
-import ru.tsystems.school.dao.StationDao;
 import ru.tsystems.school.dao.TrainDao;
 import ru.tsystems.school.dto.ScheduleDto;
 import ru.tsystems.school.dto.ScheduleDtoRest;
+import ru.tsystems.school.exceptions.CantDeleteException;
 import ru.tsystems.school.mapper.ScheduleMapper;
 import ru.tsystems.school.model.Schedule;
+import ru.tsystems.school.model.Train;
 import ru.tsystems.school.service.ScheduleService;
 
 import java.util.List;
@@ -27,12 +28,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleMapper scheduleMapper;
     private final JmsTemplate jmsTemplate;
     private final TrainDao trainDao;
-    private final StationDao stationDao;
 
-    @Override
-    public List<ScheduleDto> findAll() {
-        return scheduleDao.findAll().stream().map(scheduleMapper::toDto).sorted().collect(Collectors.toList());
-    }
 
     @Override
     public List<ScheduleDto> findSchedulesDtoByTrainId(int id) {
@@ -56,17 +52,14 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public void deleteById(int id) {
-        Schedule byId = scheduleDao.findById(id);
-        scheduleDao.deleteById(id);
-        log.info("Schedule for " + byId.getStation().getName() + " was deleted");
-        jmsTemplate.send(session -> session.createTextMessage("schedule deleted"));
-    }
+    public void deleteTrainFromSchedule(int trainId, int stationId) {
 
-    @Override
-    public void deleteTrainFromSchedule(int stationId, int trainId) {
+        Train train = trainDao.findById(trainId);
+        if (!train.getPassengers().isEmpty()) {
+            throw new CantDeleteException("train is not empty, you can't modify route");
+        }
 
-        scheduleDao.deleteTrainFromSchedule(stationId, trainId);
+        scheduleDao.deleteTrainFromSchedule(trainId, stationId);
         jmsTemplate.send(session -> session.createTextMessage("schedule was deleted"));
 
     }
