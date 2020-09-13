@@ -33,18 +33,22 @@
 									<tr>
 										<th>Train</th>
 										<th>Departure time</th>
+										<th>From station</th>
 										<th>Delete ticket</th>
 									</tr>
-									<c:forEach var="ticket" items="${tickets}">
+									<c:forEach var="ticket" items="${tickets}" varStatus="loop">
 										<tr>
 											<td>
 												<a href="${pageContext.request.contextPath}/trains/${ticket.train.id}">${ticket.train.trainNumber}</a>
 											</td>
 											<td>
-												<p>
-													<c:out value="${ticket.departureTime}"/>
-												</p>
+												<c:out value="${ticket.departureTime}"/><br/>
 											</td>
+
+											<td>
+												<c:out value="${depStations[loop.index].name}"/>
+											</td>
+
 											<td>
 												<a href="<c:url value="/deleteTicket/${ticket.id}"/>">X</a>
 											</td>

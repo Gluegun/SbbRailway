@@ -3,8 +3,10 @@ package ru.tsystems.school.dao.impl;
 import org.springframework.stereotype.Repository;
 import ru.tsystems.school.dao.AbstractJpaDao;
 import ru.tsystems.school.dao.TicketDao;
+import ru.tsystems.school.model.Station;
 import ru.tsystems.school.model.Ticket;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Repository
@@ -26,6 +28,17 @@ public class TicketDaoImpl extends AbstractJpaDao<Ticket> implements TicketDao {
         return getEntityManager().createQuery("select s from Ticket s where s.id =:id", Ticket.class)
                 .setParameter("id", id)
                 .getSingleResult();
+    }
+
+    @Override
+    public Station findStationFromByTrainIdAndDepartureTime(int trainId, LocalTime departureTime) {
+
+        return getEntityManager().createQuery("select sc.station from Schedule sc where sc.train.id = :trainId and " +
+                "sc.departureTime = :depTime", Station.class)
+                .setParameter("trainId", trainId)
+                .setParameter("depTime", departureTime)
+                .getSingleResult();
+
     }
 
     @Override

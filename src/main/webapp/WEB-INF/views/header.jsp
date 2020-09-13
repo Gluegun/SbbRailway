@@ -24,6 +24,11 @@
 			<li class="nav-item">
 				<a class="nav-link" href="${pageContext.request.contextPath}/stations">Stations</a>
 			</li>
+			<security:authorize access="isAuthenticated()">
+			<li class="nav-item">
+				<a class="nav-link" href="${pageContext.request.contextPath}/buy_ticket">Buy tickets</a>
+			</li>
+			</security:authorize>
 			<security:authorize access="isAnonymous()">
 				<li class="nav-item">
 					<a class="nav-link" href="${pageContext.request.contextPath}/login">Login</a>

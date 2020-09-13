@@ -1,7 +1,9 @@
 package ru.tsystems.school.dao;
 
+import ru.tsystems.school.model.Station;
 import ru.tsystems.school.model.Ticket;
 
+import java.time.LocalTime;
 import java.util.List;
 
 public interface TicketDao {
@@ -13,10 +15,12 @@ public interface TicketDao {
     void saveTicket(Ticket ticket);
 
     void deleteById(int id);
-    
+
     List<Ticket> findTicketsByPassengerId(int id);
-    
+
     List<Ticket> findTicketsByTrainId(int id);
+
+    public Station findStationFromByTrainIdAndDepartureTime(int trainId, LocalTime departureTime);
 
 
 }

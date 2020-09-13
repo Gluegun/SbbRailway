@@ -1,12 +1,14 @@
 package ru.tsystems.school.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalTime;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class TicketDto {
 
     private int id;
@@ -14,15 +16,4 @@ public class TicketDto {
     private LocalTime departureTime;
     private PassengerDto passenger;
 
-
-    public TicketDto(TrainDto train, LocalTime departureTime, PassengerDto passenger) {
-        super();
-        this.train = train;
-        this.departureTime = departureTime;
-        this.passenger = passenger;
-    }
-
-    public TicketDto() {
-
-    }
 }

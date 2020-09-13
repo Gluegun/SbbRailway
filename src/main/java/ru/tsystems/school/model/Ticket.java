@@ -2,6 +2,7 @@ package ru.tsystems.school.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,6 +12,9 @@ import java.time.LocalTime;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "tickets")
+@NoArgsConstructor
+@Getter
+@Setter
 public class Ticket extends AbstractPo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -25,37 +29,5 @@ public class Ticket extends AbstractPo implements Serializable {
 
     private LocalTime departureTime;
 
-    public Ticket(Passenger passenger, Train train, LocalTime departureTime) {
-        this.passenger = passenger;
-        this.train = train;
-        this.departureTime = departureTime;
-    }
 
-    public Ticket() {
-
-    }
-
-    public Passenger getPassenger() {
-        return passenger;
-    }
-
-    public void setPassenger(Passenger passenger) {
-        this.passenger = passenger;
-    }
-
-    public Train getTrain() {
-        return train;
-    }
-
-    public void setTrain(Train train) {
-        this.train = train;
-    }
-
-    public LocalTime getDepartureTime() {
-        return departureTime;
-    }
-
-    public void setDepartureTime(LocalTime departureTime) {
-        this.departureTime = departureTime;
-    }
 }

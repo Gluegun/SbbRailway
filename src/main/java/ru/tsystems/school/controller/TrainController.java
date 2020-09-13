@@ -102,20 +102,8 @@ public class TrainController {
 
         ticketService.buyTicket(trainId, fromStation);
 
-        return "redirect:/";
+        return "redirect:/account";
     }
-
-    @GetMapping("{trainId}/delay/{stationId}")
-    public String delayTrain(
-            @PathVariable int trainId,
-            @PathVariable int stationId,
-            @RequestParam int delayMinutes) {
-
-        scheduleService.delayTrain(trainId, stationId, delayMinutes);
-        return REDIRECT_TRAINS;
-
-    }
-
 
     @GetMapping("/add")
     public String addNewTrainPage() {
@@ -155,6 +143,16 @@ public class TrainController {
             @PathVariable int stationId) {
 
         scheduleService.deleteTrainFromSchedule(trainId, stationId);
+        return "redirect:/trains/{trainId}";
+    }
+
+    @GetMapping("/{trainId}/delay/{stationId}")
+    public String delayTrain(
+            @PathVariable int trainId,
+            @PathVariable int stationId,
+            @RequestParam int delayedMinutes) {
+
+        scheduleService.delayTrain(trainId, stationId, delayedMinutes);
         return "redirect:/trains/{trainId}";
     }
 

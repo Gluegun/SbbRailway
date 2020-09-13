@@ -5,13 +5,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.tsystems.school.dao.PassengerDao;
 import ru.tsystems.school.dao.TicketDao;
-import ru.tsystems.school.dto.PassengerDto;
-import ru.tsystems.school.dto.StationDto;
-import ru.tsystems.school.dto.TicketDto;
-import ru.tsystems.school.dto.TrainDto;
+import ru.tsystems.school.dto.*;
 import ru.tsystems.school.exceptions.CantBuyTicketException;
+import ru.tsystems.school.mapper.StationMapper;
 import ru.tsystems.school.mapper.TicketMapper;
 import ru.tsystems.school.model.Ticket;
 import ru.tsystems.school.service.PassengerService;
@@ -36,7 +33,7 @@ public class TicketServiceImpl implements TicketService {
     private final PassengerService passengerService;
     private final TrainService trainService;
     private final StationService stationService;
-    private final PassengerDao passengerDao;
+    private final StationMapper stationMapper;
 
     @Override
     public List<TicketDto> findAll() {
@@ -93,6 +90,12 @@ public class TicketServiceImpl implements TicketService {
         return tickets;
     }
 
+    @Override
+    public StationDto getStationDeparture(int trainId, LocalTime departureTime) {
+
+       return stationMapper.toDto(ticketDao.findStationFromByTrainIdAndDepartureTime(trainId, departureTime));
+
+    }
 
     @Override
     public void buyTicket(int trainId, String fromStation) {
@@ -113,8 +116,15 @@ public class TicketServiceImpl implements TicketService {
         }
 
         StationDto from = stationService.findByStationName(fromStation);
-        LocalTime departureTime = stationService.findScheduleForStationAndTrain(
-                from.getId(), trainDtoById.getId()).get(0).getDepartureTime();
+
+        List<ScheduleDto> scheduleForStationAndTrain =
+                stationService.findScheduleForStationAndTrain(from.getId(), trainDtoById.getId());
+
+        LocalTime departureTime = null;
+
+        for (ScheduleDto scheduleDto : scheduleForStationAndTrain) {
+            departureTime = scheduleDto.getDepartureTime();
+        }
 
         int lastTicketId = getLastTicketId();
 

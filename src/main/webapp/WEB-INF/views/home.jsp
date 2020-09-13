@@ -17,23 +17,54 @@
 	<body>
 		<%@include file="header.jsp" %>
 		<div class="container-fluid mt-3">
-			<h5 class="mb-2">Welcome to WhereFrom Railways!</h5>
-			<security:authorize access="isAnonymous()">
-				<h5>
-					<a href="${pageContext.request.contextPath}/buy_ticket" onclick="return false;">Buy ticket</a>
-				</h5>
-				<p>To buy tickets you need to log in</p>
-			</security:authorize>
-			<security:authorize access="hasAnyAuthority('ADMIN', 'USER')">
-				<a href="${pageContext.request.contextPath}/buy_ticket">Buy ticket</a>
-			</security:authorize>
+			<h5 class="mb-2" style="text-align: center">Welcome to WhereFrom Railways!</h5>
 		</div>
 		<div class="card ml-3" style="width: 40rem">
 			<img class="card-img-top" src="../../static/img/schema.jpg" alt="schema">
 			<div class="card-body">
 				<p class="card-text">Schema for stations</p>
 			</div>
+
+			<security:authorize access="isAuthenticated()">
+				<div class="container-fluid mt-3">
+					<div class="col-sm-5">
+						<form:form action="${pageContext.request.contextPath}/suitableTrainList" method="get">
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<label class="input-group-text" for="inputGroupSelect01">From</label>
+								</div>
+								<select class="custom-select" id="inputGroupSelect01" name="fromStation">
+									<c:forEach var="tempStation" items="${stations}">
+										<option selected>${tempStation.name}</option>
+									</c:forEach>
+								</select>
+							</div>
+
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<label class="input-group-text" for="inputGroupSelect02">To</label>
+								</div>
+								<select class="custom-select" id="inputGroupSelect02" name="toStation">
+									<c:forEach var="tempStation" items="${stations}">
+										<option selected>${tempStation.name}</option>
+									</c:forEach>
+								</select>
+							</div>
+							From <input type="time" name="fromTime"
+							            min="00:00" max="23:59" value="00:00"> to <input type="time" name="toTime"
+							                                                             min="00:00" max="23:59"
+							                                                             value="23:59">
+							<br>
+							<br>
+							<button type="submit" class="btn btn-primary">Find trains</button>
+						</form:form>
+					</div>
+				</div>
+			</security:authorize>
+
 		</div>
+
+
 		<%@include file="footer.jsp" %>
 		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
 		        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

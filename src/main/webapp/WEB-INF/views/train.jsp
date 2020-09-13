@@ -25,7 +25,6 @@
 					<th>Departure time</th>
 					<security:authorize access="hasAuthority('ADMIN')">
 						<th>Delete</th>
-						<th>Delay</th>
 					</security:authorize>
 				</tr>
 				<c:forEach items="${schedules}" var="tempSchedule">
@@ -36,13 +35,6 @@
 						<security:authorize access="hasAuthority('ADMIN')">
 							<td>
 								<a href="<c:url value="/trains/${tempSchedule.train.id}/delete/${tempSchedule.station.id}"/>">X</a>
-							</td>
-							<td>
-								<form action="${pageContext.request.contextPath}/${tempSchedule.train.id}/delay/${tempSchedule.station.id}"
-								      method="get">
-									Minutes: <input type="number" name="arrivalTime" min="00" max="59" value="00"/>
-									<input type="submit" value="Set train delay">
-								</form>
 							</td>
 						</security:authorize>
 					</tr>

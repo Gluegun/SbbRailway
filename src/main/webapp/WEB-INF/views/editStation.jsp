@@ -47,7 +47,6 @@
 							</c:forEach>
 						</select>
 					</div>
-					<input type="hidden" name="station" value="${schedule.get(0).station.name}">
 					Departure Time
 					<label>
 						<input type="time" name="departureTime" min="00:00" max="23:59" value="00:00"/>

@@ -62,6 +62,10 @@ public class TrainServiceImpl implements TrainService {
     @Override
     public void save(TrainDto trainDto) {
 
+        if (trainDto.getTrainNumber().trim().isEmpty()) {
+            throw new RuntimeException("Train should have train number!");
+        }
+
         List<Train> trains = trainDao.findAll();
         for (Train train : trains) {
             if (trainDto.getTrainNumber().equals(train.getTrainNumber())) {

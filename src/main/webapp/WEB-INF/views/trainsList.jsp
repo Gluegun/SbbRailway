@@ -23,8 +23,10 @@
 						<th>Train number</th>
 						<th>Seats amount</th>
 						<th>Buy ticket</th>
-						<th>Edit train</th>
-						<th>Delete train</th>
+						<security:authorize access="hasAuthority('ADMIN')">
+							<th>Edit train</th>
+							<th>Delete train</th>
+						</security:authorize>
 					</tr>
 					<c:forEach items="${trains}" var="tempTrain">
 						<tr>

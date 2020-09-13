@@ -15,6 +15,7 @@ import ru.tsystems.school.service.StationService;
 import ru.tsystems.school.service.TicketService;
 import ru.tsystems.school.service.TrainService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,13 +33,24 @@ public class GeneralController {
 
         List<TicketDto> tickets = ticketService.getTicketsForAuthorizedUser();
         PassengerDto user = passengerService.getAuthorizedPassenger();
+
+        List<StationDto> departureStations = new ArrayList<>();
+
+        for (TicketDto ticket : tickets) {
+            departureStations.add(ticketService.getStationDeparture(ticket.getTrain().getId(), ticket.getDepartureTime()));
+        }
+
         model.addAttribute("user", user);
         model.addAttribute("tickets", tickets);
+        model.addAttribute("depStations", departureStations);
         return "account";
     }
 
     @GetMapping
-    public String hello() {
+    public String homePage(Model model) {
+
+        List<StationDto> allDtoStations = stationService.findAllStations();
+        model.addAttribute("stations", allDtoStations);
         return "home";
     }
 
@@ -79,7 +91,7 @@ public class GeneralController {
         train.setSeatsAmount(train.getSeatsAmount() + 1);
         trainService.update(train);
         ticketService.deleteById(id);
-        return "redirect:/";
+        return "redirect:/account";
 
     }
 }
