@@ -1,6 +1,6 @@
 package ru.tsystems.school.dao;
 
-import ru.tsystems.school.model.Schedule;
+import ru.tsystems.school.model.entity.Schedule;
 
 import java.util.List;
 

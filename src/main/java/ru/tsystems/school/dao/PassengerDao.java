@@ -1,6 +1,6 @@
 package ru.tsystems.school.dao;
 
-import ru.tsystems.school.model.Passenger;
+import ru.tsystems.school.model.entity.Passenger;
 
 import java.util.List;
 

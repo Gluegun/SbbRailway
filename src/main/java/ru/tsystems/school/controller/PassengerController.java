@@ -3,7 +3,7 @@ package ru.tsystems.school.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.tsystems.school.dto.PassengerDto;
+import ru.tsystems.school.model.dto.PassengerDto;
 import ru.tsystems.school.service.PassengerService;
 
 @Controller

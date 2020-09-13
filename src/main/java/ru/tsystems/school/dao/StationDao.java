@@ -1,8 +1,8 @@
 package ru.tsystems.school.dao;
 
-import ru.tsystems.school.model.Schedule;
-import ru.tsystems.school.model.Station;
-import ru.tsystems.school.model.Train;
+import ru.tsystems.school.model.entity.Schedule;
+import ru.tsystems.school.model.entity.Station;
+import ru.tsystems.school.model.entity.Train;
 
 import java.time.LocalTime;
 import java.util.List;

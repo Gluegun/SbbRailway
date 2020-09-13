@@ -3,7 +3,7 @@ package ru.tsystems.school.dao.impl;
 import org.springframework.stereotype.Repository;
 import ru.tsystems.school.dao.AbstractJpaDao;
 import ru.tsystems.school.dao.ScheduleDao;
-import ru.tsystems.school.model.Schedule;
+import ru.tsystems.school.model.entity.Schedule;
 
 import java.util.List;
 

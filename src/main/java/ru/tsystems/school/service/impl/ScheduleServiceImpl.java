@@ -7,12 +7,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.school.dao.ScheduleDao;
 import ru.tsystems.school.dao.TrainDao;
-import ru.tsystems.school.dto.ScheduleDto;
-import ru.tsystems.school.dto.ScheduleDtoRest;
-import ru.tsystems.school.exceptions.CantDeleteException;
-import ru.tsystems.school.mapper.ScheduleMapper;
-import ru.tsystems.school.model.Schedule;
-import ru.tsystems.school.model.Train;
+import ru.tsystems.school.model.dto.ScheduleDto;
+import ru.tsystems.school.model.dto.ScheduleDtoRest;
+import ru.tsystems.school.service.exceptions.CantDeleteException;
+import ru.tsystems.school.model.mapper.ScheduleMapper;
+import ru.tsystems.school.model.entity.Schedule;
+import ru.tsystems.school.model.entity.Train;
 import ru.tsystems.school.service.ScheduleService;
 
 import java.util.List;

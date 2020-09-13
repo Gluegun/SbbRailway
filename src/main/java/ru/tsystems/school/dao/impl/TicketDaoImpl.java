@@ -3,8 +3,8 @@ package ru.tsystems.school.dao.impl;
 import org.springframework.stereotype.Repository;
 import ru.tsystems.school.dao.AbstractJpaDao;
 import ru.tsystems.school.dao.TicketDao;
-import ru.tsystems.school.model.Station;
-import ru.tsystems.school.model.Ticket;
+import ru.tsystems.school.model.entity.Station;
+import ru.tsystems.school.model.entity.Ticket;
 
 import java.time.LocalTime;
 import java.util.List;

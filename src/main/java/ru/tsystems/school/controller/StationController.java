@@ -5,11 +5,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
-import ru.tsystems.school.dto.ScheduleDto;
-import ru.tsystems.school.dto.StationDto;
-import ru.tsystems.school.dto.TrainDto;
-import ru.tsystems.school.exceptions.NotUniqueNameException;
-import ru.tsystems.school.model.Schedule;
+import ru.tsystems.school.model.dto.ScheduleDto;
+import ru.tsystems.school.model.dto.StationDto;
+import ru.tsystems.school.model.dto.TrainDto;
+import ru.tsystems.school.service.exceptions.NotUniqueNameException;
+import ru.tsystems.school.model.entity.Schedule;
 import ru.tsystems.school.service.ScheduleService;
 import ru.tsystems.school.service.StationService;
 

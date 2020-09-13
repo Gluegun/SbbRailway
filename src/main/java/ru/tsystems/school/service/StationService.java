@@ -1,8 +1,8 @@
 package ru.tsystems.school.service;
 
-import ru.tsystems.school.dto.ScheduleDto;
-import ru.tsystems.school.dto.StationDto;
-import ru.tsystems.school.dto.TrainDto;
+import ru.tsystems.school.model.dto.ScheduleDto;
+import ru.tsystems.school.model.dto.StationDto;
+import ru.tsystems.school.model.dto.TrainDto;
 
 import java.util.List;
 

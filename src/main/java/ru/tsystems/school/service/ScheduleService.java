@@ -1,7 +1,7 @@
 package ru.tsystems.school.service;
 
-import ru.tsystems.school.dto.ScheduleDto;
-import ru.tsystems.school.dto.ScheduleDtoRest;
+import ru.tsystems.school.model.dto.ScheduleDto;
+import ru.tsystems.school.model.dto.ScheduleDtoRest;
 
 import java.util.List;
 

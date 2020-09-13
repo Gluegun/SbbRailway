@@ -10,11 +10,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jms.core.JmsTemplate;
 import ru.tsystems.school.dao.StationDao;
 import ru.tsystems.school.dao.TrainDao;
-import ru.tsystems.school.dto.StationDto;
-import ru.tsystems.school.mapper.ScheduleMapper;
-import ru.tsystems.school.mapper.StationMapper;
-import ru.tsystems.school.mapper.TrainMapper;
-import ru.tsystems.school.model.Station;
+import ru.tsystems.school.model.dto.StationDto;
+import ru.tsystems.school.model.mapper.ScheduleMapper;
+import ru.tsystems.school.model.mapper.StationMapper;
+import ru.tsystems.school.model.mapper.TrainMapper;
+import ru.tsystems.school.model.entity.Station;
 import ru.tsystems.school.service.impl.StationServiceImpl;
 
 import static org.mockito.ArgumentMatchers.anyInt;

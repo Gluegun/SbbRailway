@@ -7,10 +7,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.school.dao.PassengerDao;
-import ru.tsystems.school.dto.PassengerDto;
-import ru.tsystems.school.exceptions.NoSuchEntityException;
-import ru.tsystems.school.mapper.PassengerMapper;
-import ru.tsystems.school.model.Passenger;
+import ru.tsystems.school.model.dto.PassengerDto;
+import ru.tsystems.school.service.exceptions.NoSuchEntityException;
+import ru.tsystems.school.model.mapper.PassengerMapper;
+import ru.tsystems.school.model.entity.Passenger;
 import ru.tsystems.school.service.PassengerService;
 
 @Service

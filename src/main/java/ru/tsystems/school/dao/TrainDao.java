@@ -1,8 +1,8 @@
 package ru.tsystems.school.dao;
 
-import ru.tsystems.school.model.Passenger;
-import ru.tsystems.school.model.Station;
-import ru.tsystems.school.model.Train;
+import ru.tsystems.school.model.entity.Passenger;
+import ru.tsystems.school.model.entity.Station;
+import ru.tsystems.school.model.entity.Train;
 
 import java.util.List;
 

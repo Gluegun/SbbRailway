@@ -4,7 +4,7 @@ import org.springframework.stereotype.Repository;
 import ru.tsystems.school.dao.AbstractJpaDao;
 import ru.tsystems.school.dao.ScheduleDao;
 import ru.tsystems.school.dao.TrainDao;
-import ru.tsystems.school.model.*;
+import ru.tsystems.school.model.entity.*;
 
 import java.util.List;
 import java.util.stream.Collectors;

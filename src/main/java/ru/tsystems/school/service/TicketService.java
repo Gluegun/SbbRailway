@@ -1,7 +1,7 @@
 package ru.tsystems.school.service;
 
-import ru.tsystems.school.dto.StationDto;
-import ru.tsystems.school.dto.TicketDto;
+import ru.tsystems.school.model.dto.StationDto;
+import ru.tsystems.school.model.dto.TicketDto;
 
 import java.time.LocalTime;
 import java.util.List;

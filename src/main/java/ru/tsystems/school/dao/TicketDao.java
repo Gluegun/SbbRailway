@@ -1,7 +1,7 @@
 package ru.tsystems.school.dao;
 
-import ru.tsystems.school.model.Station;
-import ru.tsystems.school.model.Ticket;
+import ru.tsystems.school.model.entity.Station;
+import ru.tsystems.school.model.entity.Ticket;
 
 import java.time.LocalTime;
 import java.util.List;

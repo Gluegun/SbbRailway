@@ -3,11 +3,8 @@ use railway;
 
 drop table if exists passengers;
 drop table if exists roles;
-drop table if exists route_station;
-drop table if exists routes;
 drop table if exists schedule;
 drop table if exists stations;
-drop table if exists stations_for_trains;
 drop table if exists tickets;
 drop table if exists trains;
 
@@ -23,24 +20,17 @@ create table passengers
     primary key (id)
 ) engine = MyISAM;
 
+alter table passengers
+    add constraint UK_username unique (username(200));
+
 create table roles
 (
     passenger_id integer not null,
     roles        varchar(255)
 ) engine = MyISAM;
 
-create table route_station
-(
-    route_id   integer not null,
-    station_id integer not null,
-    primary key (route_id, station_id)
-) engine = MyISAM;
-
-create table routes
-(
-    id integer not null auto_increment,
-    primary key (id)
-) engine = MyISAM;
+alter table roles
+    add constraint FK_passenger foreign key (passenger_id) references passengers (id);
 
 create table schedule
 (
@@ -52,6 +42,11 @@ create table schedule
     primary key (id)
 ) engine = MyISAM;
 
+alter table schedule
+    add constraint FK_station foreign key (station_id) references stations (id);
+alter table schedule
+    add constraint FK_train foreign key (train_id) references trains (id);
+
 create table stations
 (
     id   integer not null auto_increment,
@@ -59,13 +54,6 @@ create table stations
     primary key (id)
 ) engine = MyISAM;
 
-create table stations_for_trains
-(
-    id         integer not null,
-    station_id integer not null auto_increment,
-    train_id   integer not null,
-    primary key (station_id, train_id)
-) engine = MyISAM;
 
 create table tickets
 (
@@ -76,6 +64,12 @@ create table tickets
     primary key (id)
 ) engine = MyISAM;
 
+alter table tickets
+    add constraint FK_passenger foreign key (passenger_id) references passengers (id);
+alter table tickets
+    add constraint FK_train foreign key (train_id) references trains (id);
+
+
 create table trains
 (
     id           integer      not null auto_increment,
@@ -84,27 +78,9 @@ create table trains
     primary key (id)
 ) engine = MyISAM;
 
-
-alter table passengers
-    add constraint UK_username unique (username(200));
 alter table trains
     add constraint UK_number unique (number (200));
-alter table roles
-    add constraint FK_passenger foreign key (passenger_id) references passengers (id);
-alter table route_station
-    add constraint FK_station foreign key (station_id) references stations (id);
-alter table route_station
-    add constraint FK_route foreign key (route_id) references routes (id);
-alter table schedule
-    add constraint FK_station foreign key (station_id) references stations (id);
-alter table schedule
-    add constraint FK_train foreign key (train_id) references trains (id);
-alter table stations_for_trains
-    add constraint FK_station foreign key (station_id) references stations (id);
-alter table stations_for_trains
-    add constraint FK_train foreign key (train_id) references trains (id);
-alter table tickets
-    add constraint FK_passenger foreign key (passenger_id) references passengers (id);
-alter table tickets
-    add constraint FK_train foreign key (train_id) references trains (id);
+
+
+
 

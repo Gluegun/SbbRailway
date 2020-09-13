@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.tsystems.school.dto.ScheduleDtoRest;
-import ru.tsystems.school.dto.StationDto;
+import ru.tsystems.school.model.dto.ScheduleDtoRest;
+import ru.tsystems.school.model.dto.StationDto;
 import ru.tsystems.school.service.ScheduleService;
 import ru.tsystems.school.service.StationService;
 

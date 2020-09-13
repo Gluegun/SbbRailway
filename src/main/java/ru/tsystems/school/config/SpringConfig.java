@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import ru.tsystems.school.dao.PassengerDao;
 import ru.tsystems.school.dao.impl.PassengerDaoImpl;
-import ru.tsystems.school.dto.TrainDto;
+import ru.tsystems.school.model.dto.TrainDto;
 
 import java.util.Collections;
 

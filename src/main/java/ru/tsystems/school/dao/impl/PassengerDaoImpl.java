@@ -3,7 +3,7 @@ package ru.tsystems.school.dao.impl;
 import org.springframework.stereotype.Component;
 import ru.tsystems.school.dao.AbstractJpaDao;
 import ru.tsystems.school.dao.PassengerDao;
-import ru.tsystems.school.model.Passenger;
+import ru.tsystems.school.model.entity.Passenger;
 
 import javax.persistence.NoResultException;
 
