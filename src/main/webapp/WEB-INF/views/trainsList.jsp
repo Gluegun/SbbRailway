@@ -21,7 +21,7 @@
 				<table>
 					<tr>
 						<th>Train number</th>
-						<th>Seats amount</th>
+						<th>Available tickets</th>
 						<th>Buy ticket</th>
 						<security:authorize access="hasAuthority('ADMIN')">
 							<th>Edit train</th>

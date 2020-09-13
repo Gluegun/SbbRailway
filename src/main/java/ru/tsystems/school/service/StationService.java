@@ -6,6 +6,10 @@ import ru.tsystems.school.dto.TrainDto;
 
 import java.util.List;
 
+/**
+ * Service for stations
+ */
+
 public interface StationService {
 
     List<StationDto> findAllStations();

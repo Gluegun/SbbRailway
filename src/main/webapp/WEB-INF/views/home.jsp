@@ -18,16 +18,13 @@
 		<%@include file="header.jsp" %>
 		<div class="container-fluid mt-3">
 			<h5 class="mb-2" style="text-align: center">Welcome to WhereFrom Railways!</h5>
-		</div>
-		<div class="card ml-3" style="width: 40rem">
-			<img class="card-img-top" src="../../static/img/schema.jpg" alt="schema">
-			<div class="card-body">
-				<p class="card-text">Schema for stations</p>
-			</div>
 
-			<security:authorize access="isAuthenticated()">
-				<div class="container-fluid mt-3">
-					<div class="col-sm-5">
+			<div class="row mt-3">
+				<security:authorize access="isAuthenticated()">
+					<div class="col-sm">
+
+						<h4>Find trains</h4>
+
 						<form:form action="${pageContext.request.contextPath}/suitableTrainList" method="get">
 							<div class="input-group mb-3">
 								<div class="input-group-prepend">
@@ -59,12 +56,15 @@
 							<button type="submit" class="btn btn-primary">Find trains</button>
 						</form:form>
 					</div>
+				</security:authorize>
+				<div class="col-sm">
+					<img class="img-fluid" style="width: 60%" src="../../static/img/schema.jpg" alt="schema">
+					<div class="card-body">
+						<p class="card-text" style="text-align: center">Schema for stations</p>
+					</div>
 				</div>
-			</security:authorize>
-
+			</div>
 		</div>
-
-
 		<%@include file="footer.jsp" %>
 		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
 		        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

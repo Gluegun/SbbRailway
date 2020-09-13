@@ -45,17 +45,17 @@ values (100, 'T005');
 
 
 insert into schedule(departure_time, arrival_time, station_id, train_id)
-values ('10:00', '09:50', 1, 1);
+values ('15:00', '14:50', 1, 1);
 insert into schedule(departure_time, arrival_time, station_id, train_id)
-values ('11:00', '10:55', 2, 1);
+values ('16:00', '15:55', 2, 1);
 insert into schedule(departure_time, arrival_time, station_id, train_id)
-values ('12:00', '11:50', 3, 1);
+values ('17:00', '16:50', 3, 1);
 insert into schedule(departure_time, arrival_time, station_id, train_id)
-values ('13:00', '12:50', 4, 1);
+values ('18:00', '17:50', 4, 1);
 insert into schedule(departure_time, arrival_time, station_id, train_id)
-values ('14:00', '13:50', 5, 1);
+values ('19:00', '18:50', 5, 1);
 insert into schedule(departure_time, arrival_time, station_id, train_id)
-values ('15:00', '14:55', 6, 1);
+values ('20:00', '19:55', 6, 1);
 
 insert into schedule(departure_time, arrival_time, station_id, train_id)
 values ('11:00', '10:55', 1, 2);
@@ -69,50 +69,49 @@ insert into schedule(departure_time, arrival_time, station_id, train_id)
 values ('15:00', '14:55', 5, 2);
 
 insert into schedule(departure_time, arrival_time, station_id, train_id)
-values ('13:00', '12:55', 2, 3);
+values ('19:00', '18:55', 2, 3);
 insert into schedule(departure_time, arrival_time, station_id, train_id)
-values ('14:00', '13:55', 3, 3);
+values ('20:00', '19:55', 3, 3);
 insert into schedule(departure_time, arrival_time, station_id, train_id)
-values ('15:00', '14:55', 4, 3);
+values ('21:00', '20:55', 4, 3);
 insert into schedule(departure_time, arrival_time, station_id, train_id)
-values ('16:00', '15:55', 5, 3);
+values ('22:00', '21:55', 5, 3);
 insert into schedule(departure_time, arrival_time, station_id, train_id)
-values ('17:00', '16:55', 6, 3);
-
-
-insert into schedule(departure_time, arrival_time, station_id, train_id)
-values ('16:00', '15:55',6, 4);
-insert into schedule(departure_time, arrival_time, station_id, train_id)
-values ('17:00', '16:55',5, 4);
-insert into schedule(departure_time, arrival_time, station_id, train_id)
-values ('18:00', '17:55',4, 4);
-insert into schedule(departure_time, arrival_time, station_id, train_id)
-values ('19:00', '18:55',3, 4);
-insert into schedule(departure_time, arrival_time, station_id, train_id)
-values ('20:00', '19:55',2, 4);
-insert into schedule(departure_time, arrival_time, station_id, train_id)
-values ('21:00', '20:55',1, 4);
+values ('23:00', '22:55', 6, 3);
 
 insert into schedule(departure_time, arrival_time, station_id, train_id)
-values ('16:00', '15:55',5, 5);
+values ('18:10', '17:55', 6, 4);
 insert into schedule(departure_time, arrival_time, station_id, train_id)
-values ('17:00', '16:55',4, 5);
+values ('19:10', '18:55', 5, 4);
 insert into schedule(departure_time, arrival_time, station_id, train_id)
-values ('18:00', '17:55',3, 5);
+values ('20:10', '19:55', 4, 4);
 insert into schedule(departure_time, arrival_time, station_id, train_id)
-values ('19:00', '18:55',2, 5);
+values ('21:10', '20:55', 3, 4);
 insert into schedule(departure_time, arrival_time, station_id, train_id)
-values ('20:00', '19:55',1, 5);
+values ('22:10', '21:55', 2, 4);
+insert into schedule(departure_time, arrival_time, station_id, train_id)
+values ('23:10', '22:55', 1, 4);
+
+insert into schedule(departure_time, arrival_time, station_id, train_id)
+values ('16:00', '15:55', 5, 5);
+insert into schedule(departure_time, arrival_time, station_id, train_id)
+values ('17:00', '16:55', 4, 5);
+insert into schedule(departure_time, arrival_time, station_id, train_id)
+values ('18:00', '17:55', 3, 5);
+insert into schedule(departure_time, arrival_time, station_id, train_id)
+values ('19:00', '18:55', 2, 5);
+insert into schedule(departure_time, arrival_time, station_id, train_id)
+values ('20:00', '19:55', 1, 5);
 
 INSERT INTO tickets(departureTime, passenger_id, train_id)
-VALUES ('10:00', 2, 1);
+VALUES ('15:00', 2, 1);
 INSERT INTO tickets(departureTime, passenger_id, train_id)
-VALUES ('11:00', 1, 1);
+VALUES ('16:00', 1, 1);
 
 INSERT INTO tickets(departureTime, passenger_id, train_id)
 VALUES ('11:00', 4, 2);
 
 INSERT INTO tickets(departureTime, passenger_id, train_id)
-VALUES ('13:00', 3, 3);
+VALUES ('19:00', 3, 3);
 INSERT INTO tickets(departureTime, passenger_id, train_id)
-VALUES ('13:00', 5, 3);
+VALUES ('21:00', 5, 3);

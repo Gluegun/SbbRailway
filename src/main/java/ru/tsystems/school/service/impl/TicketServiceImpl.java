@@ -93,7 +93,12 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public StationDto getStationDeparture(int trainId, LocalTime departureTime) {
 
-       return stationMapper.toDto(ticketDao.findStationFromByTrainIdAndDepartureTime(trainId, departureTime));
+
+        StationDto stationDto = stationMapper
+                .toDto(ticketDao.findStationFromByTrainIdAndDepartureTime(trainId, departureTime));
+
+
+        return stationDto;
 
     }
 
@@ -120,10 +125,14 @@ public class TicketServiceImpl implements TicketService {
         List<ScheduleDto> scheduleForStationAndTrain =
                 stationService.findScheduleForStationAndTrain(from.getId(), trainDtoById.getId());
 
-        LocalTime departureTime = null;
+        LocalTime departureTime = LocalTime.now();
 
         for (ScheduleDto scheduleDto : scheduleForStationAndTrain) {
             departureTime = scheduleDto.getDepartureTime();
+        }
+
+        if (LocalTime.now().plusMinutes(10).isAfter(departureTime)) {
+            throw new CantBuyTicketException("Registration is already closed");
         }
 
         int lastTicketId = getLastTicketId();
