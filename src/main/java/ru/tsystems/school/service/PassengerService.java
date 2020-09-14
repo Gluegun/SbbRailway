@@ -8,6 +8,9 @@ public interface PassengerService {
 
     PassengerDto findByUserName(String userName);
 
+    /**
+     * @return current authorized User
+     */
     PassengerDto getAuthorizedPassenger();
 
 }

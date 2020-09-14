@@ -20,17 +20,17 @@ insert into roles (passenger_id, roles)
 values (5, 'USER');
 
 insert into stations (name)
-values ('Яблочная');
+values ('Apple');
 insert into stations (name)
-values ('Грушевая');
+values ('Pear');
 insert into stations (name)
-values ('Виноградная');
+values ('Grapes');
 insert into stations (name)
-values ('Арбузная');
+values ('Watermelon');
 insert into stations (name)
-values ('Черешневая');
+values ('Sweet cherry');
 insert into stations (name)
-values ('Вишневая');
+values ('Cherry');
 
 insert into trains(seats_amount, number)
 values (1000, 'T001');

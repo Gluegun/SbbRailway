@@ -10,14 +10,11 @@ import ru.tsystems.school.dao.TrainDao;
 import ru.tsystems.school.model.dto.ScheduleDto;
 import ru.tsystems.school.model.dto.StationDto;
 import ru.tsystems.school.model.dto.TrainDto;
-import ru.tsystems.school.service.exceptions.NoSuchEntityException;
-import ru.tsystems.school.service.exceptions.NotUniqueNameException;
-import ru.tsystems.school.model.mapper.ScheduleMapper;
-import ru.tsystems.school.model.mapper.StationMapper;
-import ru.tsystems.school.model.mapper.TrainMapper;
 import ru.tsystems.school.model.entity.Station;
 import ru.tsystems.school.model.entity.Train;
 import ru.tsystems.school.service.StationService;
+import ru.tsystems.school.model.mapper.*;
+import ru.tsystems.school.service.exceptions.*;
 
 import java.time.LocalTime;
 import java.util.ArrayList;

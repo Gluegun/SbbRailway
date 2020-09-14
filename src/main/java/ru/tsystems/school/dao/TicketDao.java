@@ -20,7 +20,7 @@ public interface TicketDao {
 
     List<Ticket> findTicketsByTrainId(int id);
 
-    public Station findStationFromByTrainIdAndDepartureTime(int trainId, LocalTime departureTime);
+    Station findStationFromByTrainIdAndDepartureTime(int trainId, LocalTime departureTime);
 
 
 }

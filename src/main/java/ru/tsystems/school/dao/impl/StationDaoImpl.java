@@ -9,7 +9,6 @@ import ru.tsystems.school.model.entity.Schedule;
 import ru.tsystems.school.model.entity.Station;
 import ru.tsystems.school.model.entity.Train;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -74,15 +73,6 @@ public class StationDaoImpl extends AbstractJpaDao<Station> implements StationDa
 
     }
 
-    @Override
-    public void addSchedule(int stationId, int trainId, LocalTime arrivalTime, LocalTime departureTime) {
-
-        Station stationFromDb = findById(stationId);
-        Train trainFromDb = trainDao.findById(trainId);
-        Schedule schedule = new Schedule(trainFromDb, arrivalTime, departureTime, stationFromDb);
-        scheduleDao.save(schedule);
-
-    }
 
     @Override
     public List<Train> findSuitableTrains(Station from, Station to, String fromTime, String toTime) {

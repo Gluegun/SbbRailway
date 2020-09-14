@@ -11,22 +11,22 @@ import org.springframework.jms.core.JmsTemplate;
 import ru.tsystems.school.dao.StationDao;
 import ru.tsystems.school.dao.TrainDao;
 import ru.tsystems.school.model.dto.StationDto;
+import ru.tsystems.school.model.entity.Station;
 import ru.tsystems.school.model.mapper.ScheduleMapper;
 import ru.tsystems.school.model.mapper.StationMapper;
 import ru.tsystems.school.model.mapper.TrainMapper;
-import ru.tsystems.school.model.entity.Station;
 import ru.tsystems.school.service.impl.StationServiceImpl;
 
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class StationServiceTest {
 
+
     @Mock
     private StationDao stationDao;
-    @Mock
-    private TrainDao trainDao;
     @Mock
     private StationMapper stationMapper;
     @Mock
@@ -34,7 +34,10 @@ public class StationServiceTest {
     @Mock
     private ScheduleMapper scheduleMapper;
     @Mock
+    private TrainDao trainDao;
+    @Mock
     private JmsTemplate jmsTemplate;
+
     @InjectMocks
     private StationServiceImpl stationService;
 
@@ -44,7 +47,7 @@ public class StationServiceTest {
     }
 
     @Test
-    public void updateStation() {
+    public void updateStationTest() {
 
         Station station = new Station("stationName");
 
@@ -61,4 +64,14 @@ public class StationServiceTest {
         verifyNoInteractions(scheduleMapper);
 
     }
+
+    @Test
+    public void findAllTrainsForCurrentStationTest() {
+
+
+        given(stationDao.findAllTrainsForCurrentStation(anyInt())).willReturn(anyList());
+
+    }
+
+
 }

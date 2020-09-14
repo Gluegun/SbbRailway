@@ -6,13 +6,7 @@ import java.util.List;
 
 public interface ScheduleDao {
 
-    List<Schedule> findAll();
-
-    Schedule findById(int id);
-
     void save(Schedule schedule);
-
-    void deleteById(int id);
 
     List<Schedule> findSchedulesByTrainId(int id);
 

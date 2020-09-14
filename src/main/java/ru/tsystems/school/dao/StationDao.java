@@ -4,7 +4,6 @@ import ru.tsystems.school.model.entity.Schedule;
 import ru.tsystems.school.model.entity.Station;
 import ru.tsystems.school.model.entity.Train;
 
-import java.time.LocalTime;
 import java.util.List;
 
 public interface StationDao {
@@ -28,8 +27,6 @@ public interface StationDao {
     List<Train> findSuitableTrains(Station from, Station to, String fromTime, String toTime);
 
     Station findByStationName(String name);
-
-    void addSchedule(int stationId, int trainId, LocalTime arrivalTime, LocalTime departureTime);
 
     void saveSchedule(Schedule schedule);
 

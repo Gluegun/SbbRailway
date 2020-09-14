@@ -9,11 +9,11 @@ import ru.tsystems.school.dao.ScheduleDao;
 import ru.tsystems.school.dao.TrainDao;
 import ru.tsystems.school.model.dto.ScheduleDto;
 import ru.tsystems.school.model.dto.ScheduleDtoRest;
-import ru.tsystems.school.service.exceptions.CantDeleteException;
-import ru.tsystems.school.model.mapper.ScheduleMapper;
 import ru.tsystems.school.model.entity.Schedule;
 import ru.tsystems.school.model.entity.Train;
 import ru.tsystems.school.service.ScheduleService;
+import ru.tsystems.school.model.mapper.*;
+import ru.tsystems.school.service.exceptions.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
